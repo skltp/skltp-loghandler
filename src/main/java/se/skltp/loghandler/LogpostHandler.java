@@ -1,9 +1,9 @@
-package se.skltp.anslutningslaget;
+package se.skltp.loghandler;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import se.skltp.anslutningslaget.models.Anslutning;
-import se.skltp.anslutningslaget.models.AnslutningDao;
+import se.skltp.loghandler.models.Anslutning;
+import se.skltp.loghandler.models.AnslutningDao;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;

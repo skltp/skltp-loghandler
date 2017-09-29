@@ -1,6 +1,4 @@
-package se.skltp.anslutningslaget.models;
-
-import java.util.List;
+package se.skltp.loghandler.models;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

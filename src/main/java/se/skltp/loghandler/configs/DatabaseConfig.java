@@ -1,4 +1,4 @@
-package se.skltp.anslutningslaget.configs;
+package se.skltp.loghandler.configs;
 
 import java.util.Properties;
 

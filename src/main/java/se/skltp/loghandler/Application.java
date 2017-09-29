@@ -1,4 +1,4 @@
-package se.skltp.anslutningslaget;
+package se.skltp.loghandler;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,15 +11,12 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.ip.tcp.TcpReceivingChannelAdapter;
 import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
-import org.springframework.integration.ip.tcp.serializer.ByteArrayCrLfSerializer;
 import org.springframework.integration.transformer.ObjectToStringTransformer;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import javax.net.SocketFactory;
 import java.io.*;
-import java.net.Socket;
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
