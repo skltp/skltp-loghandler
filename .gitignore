@@ -1,3 +1,4 @@
 .idea/
 *.iml
 skltp-loghandler/target/
+target/
