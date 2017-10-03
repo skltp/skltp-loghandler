@@ -1,85 +1,93 @@
 package se.skltp.loghandler.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "anslutning")
+@Table(name = "anslutning"/*, indexes = { @Index(name = "IDX_ANSLUTNING", columnList = "vardgivare,vardenhet,organisatoriskenhet,tjanstekontrakt,kategori,kallsystem,ursprungligkonsument") }*/)
 public class Anslutning {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
-  
-//  @NotNull
-  private String vardgivare;
-  
-//  @NotNull
-  private String vardenhet;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-  private String organisatoriskenhet;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "vardgivare")
+    private Vardgivare vardgivare;
 
-  private String tjanstekontrakt;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "vardenhet")
+    private Vardenhet vardenhet;
 
-  private String kategori;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "organisatoriskenhet")
+    private Organisatoriskenhet organisatoriskenhet;
 
-  private String kallsystem;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "tjanstekontrakt")
+    private Tjanstekontrakt tjanstekontrakt;
 
-  private Date oldest;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "kategori")
+    private Kategori kategori;
 
-  private Date youngest;
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "kallsystem")
+    private Kallsystem kallsystem;
 
-  private String ursprungligkonsument;
+    private Date oldest;
 
-    public String getVardgivare() {
+    private Date youngest;
+
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "ursprungligkonsument")
+    private Ursprungligkonsument ursprungligkonsument;
+
+    public Vardgivare getVardgivare() {
         return vardgivare;
     }
 
-    public void setVardgivare(String vardgivare) {
+    public void setVardgivare(Vardgivare vardgivare) {
         this.vardgivare = vardgivare;
     }
 
-    public String getVardenhet() {
+    public Vardenhet getVardenhet() {
         return vardenhet;
     }
 
-    public void setVardenhet(String vardenhet) {
+    public void setVardenhet(Vardenhet vardenhet) {
         this.vardenhet = vardenhet;
     }
 
-    public String getOrganisatoriskenhet() {
+    public Organisatoriskenhet getOrganisatoriskenhet() {
         return organisatoriskenhet;
     }
 
-    public void setOrganisatoriskenhet(String organisatoriskenhet) {
+    public void setOrganisatoriskenhet(Organisatoriskenhet organisatoriskenhet) {
         this.organisatoriskenhet = organisatoriskenhet;
     }
 
-    public String getTjanstekontrakt() {
+    public Tjanstekontrakt getTjanstekontrakt() {
         return tjanstekontrakt;
     }
 
-    public void setTjanstekontrakt(String tjanstekontrakt) {
+    public void setTjanstekontrakt(Tjanstekontrakt tjanstekontrakt) {
         this.tjanstekontrakt = tjanstekontrakt;
     }
 
-    public String getKategori() {
+    public Kategori getKategori() {
         return kategori;
     }
 
-    public void setKategori(String kategori) {
+    public void setKategori(Kategori kategori) {
         this.kategori = kategori;
     }
 
-    public String getKallsystem() {
+    public Kallsystem getKallsystem() {
         return kallsystem;
     }
 
-    public void setKallsystem(String kallsystem) {
+    public void setKallsystem(Kallsystem kallsystem) {
         this.kallsystem = kallsystem;
     }
 
@@ -99,11 +107,11 @@ public class Anslutning {
         this.youngest = youngest;
     }
 
-    public String getUrsprungligkonsument() {
+    public Ursprungligkonsument getUrsprungligkonsument() {
         return ursprungligkonsument;
     }
 
-    public void setUrsprungligkonsument(String ursprungligkonsument) {
+    public void setUrsprungligkonsument(Ursprungligkonsument ursprungligkonsument) {
         this.ursprungligkonsument = ursprungligkonsument;
     }
 }

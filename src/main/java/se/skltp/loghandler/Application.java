@@ -1,5 +1,6 @@
 package se.skltp.loghandler;
 
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,7 +14,9 @@ import org.springframework.integration.ip.tcp.connection.AbstractServerConnectio
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
 import org.springframework.integration.transformer.ObjectToStringTransformer;
 import org.springframework.messaging.MessageChannel;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.io.*;
@@ -21,6 +24,7 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAsync
+@EnableScheduling
 public class Application {
 
   public Application() {
@@ -31,11 +35,11 @@ public class Application {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
     }
 
-    @Bean
+    @Bean(name = "logpostParserPool")
     public Executor asyncExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(2);
-        executor.setMaxPoolSize(2);
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(5);
         executor.setQueueCapacity(500);
         executor.setThreadNamePrefix("LogpostParser-");
         executor.initialize();
@@ -72,8 +76,9 @@ public class Application {
 
     @ServiceActivator(inputChannel = "serviceChannel")
     public void service(String in) {
-        System.out.println(in);
+        //System.out.println(in);
         LogpostHandler.instance.addLogpost(in);
+        System.out.println("Added logpost");
     }
 
     private class MyDeserializer implements Deserializer<String> {
@@ -88,7 +93,7 @@ public class Application {
                     strBuilder.append('\n');
                 }
                 strBuilder.append(line);
-                System.out.println(line);
+                //System.out.println(line);
             } while (!line.startsWith("** logEvent-debug.end"));
 
             return strBuilder.toString();
