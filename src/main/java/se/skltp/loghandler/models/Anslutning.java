@@ -1,10 +1,13 @@
 package se.skltp.loghandler.models;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "anslutning"/*, indexes = { @Index(name = "IDX_ANSLUTNING", columnList = "vardgivare,vardenhet,organisatoriskenhet,tjanstekontrakt,kategori,kallsystem,ursprungligkonsument") }*/)
+@Table(name = "anslutning", indexes = { @Index(name = "IDX_ANSLUTNING", columnList = "vardgivare,vardenhet,organisatoriskenhet,tjanstekontrakt,kategori,kallsystem,ursprungligkonsument", unique = true) })
 public class Anslutning {
 
     @Id

@@ -1,31 +1,29 @@
 package se.skltp.loghandler.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by parlin on 2017-10-03.
  */
 @Entity
+@NamedQueries({ @NamedQuery(name = "KallsystemByHSAId", query = "SELECT o FROM Kallsystem o where o.hsaid=:hsaid")})
 public class Kallsystem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String kallsystem;
+    private String hsaid;
 
     public long getId() {
         return id;
     }
 
-    public String getKallsystem() {
-        return kallsystem;
+    public String getHsaid() {
+        return hsaid;
     }
 
-    public void setKallsystem(String kallsystem) {
-        this.kallsystem = kallsystem;
+    public void setHsaid(String hsaid) {
+        this.hsaid = hsaid;
     }
 }

@@ -1,31 +1,29 @@
 package se.skltp.loghandler.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by parlin on 2017-10-03.
  */
 @Entity
+@NamedQueries({ @NamedQuery(name = "OrganisatoriskenhetByHSAId", query = "SELECT o FROM Organisatoriskenhet o where o.hsaid=:hsaid")})
 public class Organisatoriskenhet {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String organisatoriskenhet;
+    private String hsaid;
 
     public long getId() {
         return id;
     }
 
-    public String getOrganisatoriskenhet() {
-        return organisatoriskenhet;
+    public String getHsaid() {
+        return hsaid;
     }
 
-    public void setOrganisatoriskenhet(String organisatoriskenhet) {
-        this.organisatoriskenhet = organisatoriskenhet;
+    public void setHsaid(String hsaid) {
+        this.hsaid = hsaid;
     }
 }

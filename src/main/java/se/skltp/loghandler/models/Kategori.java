@@ -1,14 +1,12 @@
 package se.skltp.loghandler.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by parlin on 2017-10-03.
  */
 @Entity
+@NamedQueries({ @NamedQuery(name = "KategoriByKategori", query = "SELECT o FROM Kategori o where o.kategori=:kategori")})
 public class Kategori {
 
     @Id

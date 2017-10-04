@@ -6,23 +6,24 @@ import javax.persistence.*;
  * Created by parlin on 2017-10-03.
  */
 @Entity
+@NamedQueries({ @NamedQuery(name = "VardgivareByHSAId", query = "SELECT o FROM Vardgivare o where o.hsaid=:hsaid")})
 public class Vardgivare {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String vardgivare;
+    private String hsaid;
 
     public long getId() {
         return id;
     }
 
-    public String getVardgivare() {
-        return vardgivare;
+    public String getHsaid() {
+        return hsaid;
     }
 
-    public void setVardgivare(String vardgivare) {
-        this.vardgivare = vardgivare;
+    public void setHsaid(String hsaid) {
+        this.hsaid = hsaid;
     }
 }

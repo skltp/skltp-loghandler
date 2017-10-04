@@ -25,7 +25,14 @@ public class DatabaseWriter {
         System.out.println("Running handleAnslutningar");
         List<Anslutning> anslutningar = logpostParserService.getLatestAnlutningar();
         for (Anslutning a : anslutningar) {
-            anslutningDao.update(a);
+            Anslutning anslutning = anslutningDao.getByExample(a);
+            if(anslutning == null) {
+                anslutning = a;
+            } else {
+                anslutning.setYoungest(a.getYoungest());
+            }
+
+            anslutningDao.update(anslutning);
         }
     }
 }

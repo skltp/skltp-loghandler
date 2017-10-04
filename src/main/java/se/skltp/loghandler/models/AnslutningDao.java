@@ -2,9 +2,12 @@ package se.skltp.loghandler.models;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * This class is used to access data for the User entity.
@@ -47,9 +50,9 @@ public class AnslutningDao {
    * Return all the users stored in the database.
    */
   @SuppressWarnings("unchecked")
-  /*public List<Anslutning> getAll() {
+  public List<Anslutning> getAll() {
     return entityManager.createQuery("from Anslutning").getResultList();
-  }*/
+  }
 
   /**
    * Return the user having the passed id.
@@ -74,5 +77,17 @@ public class AnslutningDao {
   // setup on DatabaseConfig class.
   @PersistenceContext
   private EntityManager entityManager;
-  
-} // class UserDao
+//vardgivare,vardenhet,organisatoriskenhet,tjanstekontrakt,kategori,kallsystem,ursprungligkonsument
+  public Anslutning getByExample(Anslutning example) {
+    TypedQuery<Anslutning> query = entityManager.createQuery("SELECT o FROM Anslutning o where o.vardgivare=:vardgivare AND o.vardenhet=:vardenhet AND o.organisatoriskenhet=:organisatoriskenhet AND o.tjanstekontrakt=:tjanstekontrakt AND o.kategori=:kategori AND o.kallsystem=:kallsystem AND o.ursprungligkonsument=:ursprungligkonsument", Anslutning.class);
+    query.setParameter("vardgivare", example.getVardgivare());
+    query.setParameter("vardenhet", example.getVardenhet());
+    query.setParameter("organisatoriskenhet", example.getOrganisatoriskenhet());
+    query.setParameter("tjanstekontrakt", example.getTjanstekontrakt());
+    query.setParameter("kategori", example.getKategori());
+    query.setParameter("kallsystem", example.getKallsystem());
+    query.setParameter("ursprungligkonsument", example.getUrsprungligkonsument());
+    List<Anslutning> anslutningList = query.getResultList();
+    return anslutningList.isEmpty() ? null : anslutningList.get(0);
+  }
+}

@@ -1,8 +1,11 @@
 package se.skltp.loghandler;
 
+import org.apache.log4j.spi.LoggingEvent;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.serializer.Deserializer;
@@ -23,6 +26,7 @@ import java.io.*;
 import java.util.concurrent.Executor;
 
 @SpringBootApplication
+@EnableAutoConfiguration
 @EnableAsync
 @EnableScheduling
 public class Application {
@@ -84,6 +88,11 @@ public class Application {
     private class MyDeserializer implements Deserializer<String> {
         @Override
         public String deserialize(InputStream inputStream) throws IOException {
+            //ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(inputStream));
+            //LoggingEvent event = (LoggingEvent) ois.readObject();
+            //return event.toString();
+
+            //Kod för test via telnet
             StringBuilder strBuilder = new StringBuilder();
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
             String line;

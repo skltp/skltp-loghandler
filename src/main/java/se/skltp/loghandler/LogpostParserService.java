@@ -29,6 +29,27 @@ public class LogpostParserService {
 
     private static List<Anslutning> anslutningar = new ArrayList<>();
 
+    @Autowired
+    private TjanstekontraktDao tjanstekontraktDao;
+
+    @Autowired
+    private KallsystemDao kallsystemDao;
+
+    @Autowired
+    private KategoriDao kategoriDao;
+
+    @Autowired
+    private OrganisatoriskenhetDao organisatoriskenhetDao;
+
+    @Autowired
+    private UrsprungligkonsumentDao ursprungligkonsumentDao;
+
+    @Autowired
+    private VardenhetDao vardenhetDao;
+
+    @Autowired
+    private VardgivareDao vardgivareDao;
+
     public synchronized static void addAnlutning(Anslutning anslutning) {
         anslutningar.add(anslutning);
     }
@@ -80,13 +101,12 @@ public class LogpostParserService {
 
                     for (Anslutning anslutning:anslutningList) {
                         anslutning.setOldest(vpdate); //TODO: Ska bara sättas vid nya poster
-                        Tjanstekontrakt tjanstekontraktObj = new Tjanstekontrakt();
-                        tjanstekontraktObj.setTjanstekontrakt(tjanstekontrakt);
-                        anslutning.setTjanstekontrakt(tjanstekontraktObj);
+                        anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt));
                         anslutning.setYoungest(vpdate);
-                        Ursprungligkonsument ursprungligkonsumentObj = new Ursprungligkonsument();
-                        ursprungligkonsumentObj.setUrsprungligkonsument(ursprungligkonsument);
-                        anslutning.setUrsprungligkonsument(ursprungligkonsumentObj);
+                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByHSAIdCreateIfNew(ursprungligkonsument));
+                        if(anslutning.getKategori() == null) {
+                            anslutning.setKategori(kategoriDao.getByKategoriCreateIfNew(""));
+                        }
                     }
 
                     anslutningar.addAll(anslutningList);
@@ -128,30 +148,19 @@ public class LogpostParserService {
                     switch (lastElement) {
                         case "sourceSystemHSAid": if(anslutning != null) {anslutningList.add(anslutning);}
                             anslutning = new Anslutning();
-                            Kallsystem kallsystem = new Kallsystem();
-                            kallsystem.setKallsystem(event.asCharacters().getData().toString());
-                            anslutning.setKallsystem(kallsystem);
+                            anslutning.setKallsystem(kallsystemDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "healthcareProfessionalCareGiverHSAId":
-                            Vardgivare vardgivare = new Vardgivare();
-                            vardgivare.setVardgivare(event.asCharacters().getData().toString());
-                            anslutning.setVardgivare(vardgivare);
+                            anslutning.setVardgivare(vardgivareDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "healthcareProfessionalCareUnitHSAId":
-                            Vardenhet vardenhet = new Vardenhet();
-                            vardenhet.setVardenhet(event.asCharacters().getData().toString());
-                            anslutning.setVardenhet(vardenhet);
+                            anslutning.setVardenhet(vardenhetDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
                             break;
-                        case "healthcareProfessionalOrgUnit":
-                            Organisatoriskenhet organisatoriskenhet = new Organisatoriskenhet();
-                            //Funkar ej, Ligger i underelement orgUnitHSAId
-                            organisatoriskenhet.setOrganisatoriskenhet(event.asCharacters().getData().toString());
-                            anslutning.setOrganisatoriskenhet(organisatoriskenhet);
+                        case "orgUnitHSAId":
+                            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "assessmentCategory":
-                            Kategori kategori = new Kategori();
-                            kategori.setKategori(event.asCharacters().getData().toString());
-                            anslutning.setKategori(kategori);
+                            anslutning.setKategori(kategoriDao.getByKategoriCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                     }
                 } else if(event.isEndElement()) {
