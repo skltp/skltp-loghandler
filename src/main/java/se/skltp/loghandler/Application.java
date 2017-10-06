@@ -103,7 +103,7 @@ public class Application {
                 }
                 strBuilder.append(line);
                 //System.out.println(line);
-            } while (!line.startsWith("** logEvent-debug.end"));
+            } while (!line.startsWith("** logEvent-debug.end")); //TODO: Stöd för mer än debug
 
             return strBuilder.toString();
         }

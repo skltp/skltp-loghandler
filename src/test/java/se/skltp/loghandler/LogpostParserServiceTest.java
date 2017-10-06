@@ -22,10 +22,19 @@ public class LogpostParserServiceTest {
     private LogpostParserService logpostParserService;
 
     @Test
-    public void parseLogpost() throws InterruptedException {
+    public void testOfullstandigLogpost() throws InterruptedException {
         logpostParserService.parseLogpost("Test");
         List<Anslutning> latestAnlutningar = LogpostParserService.getLatestAnlutningar();
         Assert.assertEquals(0, latestAnlutningar.size());
     }
+
+    @Test
+    public void testParseLogpost() throws InterruptedException {
+        logpostParserService.parseLogpost(LogpostMocker.getMockLogpost());
+        Thread.sleep(1000);
+        List<Anslutning> latestAnlutningar = LogpostParserService.getLatestAnlutningar();
+        Assert.assertEquals(1, latestAnlutningar.size());
+    }
+
 
 }

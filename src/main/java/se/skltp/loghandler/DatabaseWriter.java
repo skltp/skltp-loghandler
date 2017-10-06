@@ -15,15 +15,12 @@ import java.util.List;
 public class DatabaseWriter {
 
     @Autowired
-    LogpostParserService logpostParserService;
-
-    @Autowired
     private AnslutningDao anslutningDao;
 
     @Scheduled(fixedDelay = 5000)
     public void handleAnslutningar() {
         System.out.println("Running handleAnslutningar");
-        List<Anslutning> anslutningar = logpostParserService.getLatestAnlutningar();
+        List<Anslutning> anslutningar = LogpostParserService.getLatestAnlutningar();
         for (Anslutning a : anslutningar) {
             Anslutning anslutning = anslutningDao.getByExample(a);
             if(anslutning == null) {

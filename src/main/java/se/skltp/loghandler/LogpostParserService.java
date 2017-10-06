@@ -26,6 +26,7 @@ public class LogpostParserService {
 
     public static final String SERVICECONTRACT_NAMESPACE = "-servicecontract_namespace=";
     public static final String ORIGINAL_SERVICECONSUMER_HSAID = "-originalServiceconsumerHsaid=";
+    public static final String LOG_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
 
     private static List<Anslutning> anslutningar = new ArrayList<>();
 
@@ -85,7 +86,7 @@ public class LogpostParserService {
                 } else if(Pattern.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d.*", line)) {
                     //System.out.println("dateline:" + line);
                     String datestring = line.substring(0,19);
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    DateFormat format = new SimpleDateFormat(LOG_DATE_FORMAT);
                     vpdate = format.parse(datestring);
                 } else if(line.contains("<SOAP-ENV:Envelope")) {
                     StringBuilder strBuilder = new StringBuilder();
