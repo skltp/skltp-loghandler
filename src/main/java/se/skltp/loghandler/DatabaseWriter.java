@@ -3,8 +3,8 @@ package se.skltp.loghandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import se.skltp.loghandler.models.Anslutning;
-import se.skltp.loghandler.models.AnslutningDao;
+import se.skltp.loghandler.models.entity.Anslutning;
+import se.skltp.loghandler.models.dao.AnslutningDao;
 
 import java.util.List;
 

@@ -1,7 +1,4 @@
-package se.skltp.loghandler.models;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.CreatedDate;
+package se.skltp.loghandler.models.entity;
 
 import javax.persistence.*;
 import java.util.Date;

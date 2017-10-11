@@ -6,13 +6,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import se.skltp.loghandler.models.*;
+import se.skltp.loghandler.models.dao.*;
+import se.skltp.loghandler.models.entity.Anslutning;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 /**
  * Created by parlin on 2017-10-06.
@@ -60,12 +59,12 @@ public class DatabaseWriterTest {
         for (int i = 0; i < 3 ; i++) {
             Anslutning anslutning = new Anslutning();
             anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew("Kontrakt:" + i));
-            anslutning.setKallsystem(kallsystemDao.getByHSAIdCreateIfNew("Kallsystem:" + i ));
-            anslutning.setKategori(kategoriDao.getByKategoriCreateIfNew("Kategori:" + i));
-            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByHSAIdCreateIfNew("OrganisatoriskEnhet:" +i));
-            anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByHSAIdCreateIfNew("UrsprungligKonsument:"+i));
-            anslutning.setVardenhet(vardenhetDao.getByHSAIdCreateIfNew("Vardenhet:" +i));
-            anslutning.setVardgivare(vardgivareDao.getByHSAIdCreateIfNew("Vardgivare:" +i));
+            anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew("Kallsystem:" + i ));
+            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("Kategori:" + i));
+            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew("OrganisatoriskEnhet:" +i));
+            anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew("UrsprungligKonsument:"+i));
+            anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew("Vardenhet:" +i));
+            anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew("Vardgivare:" +i));
             anslutning.setYoungest(new Date());
             anslutning.setOldest(new Date());
             anslutningar.add(anslutning);

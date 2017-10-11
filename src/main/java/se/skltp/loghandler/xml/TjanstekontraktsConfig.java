@@ -1,7 +1,5 @@
 package se.skltp.loghandler.xml;
 
-import se.skltp.loghandler.models.Tjanstekontrakt;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;

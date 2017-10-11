@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import se.skltp.loghandler.configs.TjanstekontraktSettingsConfig;
-import se.skltp.loghandler.models.*;
-import se.skltp.loghandler.xml.TjanstekontraktsConfig;
+import se.skltp.loghandler.models.dao.*;
+import se.skltp.loghandler.models.entity.Anslutning;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -112,9 +112,9 @@ public class LogpostParserService {
                         anslutning.setOldest(vpdate); //TODO: Ska bara sättas vid nya poster
                         anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt));
                         anslutning.setYoungest(vpdate);
-                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByHSAIdCreateIfNew(ursprungligkonsument));
+                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument));
                         if(anslutning.getKategori() == null) {
-                            anslutning.setKategori(kategoriDao.getByKategoriCreateIfNew(""));
+                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew(""));
                         }
                     }
 
@@ -161,19 +161,19 @@ public class LogpostParserService {
                     switch (lastElement) {
                         case "sourceSystemHSAid": if(anslutning != null) {anslutningList.add(anslutning);}
                             anslutning = new Anslutning();
-                            anslutning.setKallsystem(kallsystemDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
+                            anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "healthcareProfessionalCareGiverHSAId":
-                            anslutning.setVardgivare(vardgivareDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
+                            anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "healthcareProfessionalCareUnitHSAId":
-                            anslutning.setVardenhet(vardenhetDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
+                            anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "orgUnitHSAId":
-                            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByHSAIdCreateIfNew(event.asCharacters().getData().toString()));
+                            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                         case "assessmentCategory":
-                            anslutning.setKategori(kategoriDao.getByKategoriCreateIfNew(event.asCharacters().getData().toString()));
+                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                             break;
                     }
                 } else if(event.isEndElement()) {

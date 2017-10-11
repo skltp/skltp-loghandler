@@ -1,13 +1,15 @@
-package se.skltp.loghandler.models;
+package se.skltp.loghandler.models.entity;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 /**
- * Created by parlin on 2017-10-03.
+ * Created by parlin on 2017-10-11.
  */
-@Entity
-@NamedQueries({ @NamedQuery(name = "TjanstekontraktByName", query = "SELECT o FROM Tjanstekontrakt o where o.name=:name")})
-public class Tjanstekontrakt {
+@MappedSuperclass
+public class AnslutningChild {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
