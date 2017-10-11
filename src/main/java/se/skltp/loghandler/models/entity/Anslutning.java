@@ -8,7 +8,7 @@ import java.util.Date;
 public class Anslutning {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne(cascade = {CascadeType.ALL})
