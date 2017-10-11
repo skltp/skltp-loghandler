@@ -27,27 +27,15 @@ import java.util.concurrent.Executor;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@EnableAsync
 @EnableScheduling
 public class Application {
 
-  public Application() {
+    public Application() {
 
-  }
+    }
 
     public static void main(String[] args) throws Exception {
         ConfigurableApplicationContext context = SpringApplication.run(Application.class, args);
-    }
-
-    @Bean(name = "logpostParserPool")
-    public Executor asyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(5);
-        executor.setMaxPoolSize(5);
-        executor.setQueueCapacity(500);
-        executor.setThreadNamePrefix("LogpostParser-");
-        executor.initialize();
-        return executor;
     }
 
     @Bean
@@ -103,7 +91,7 @@ public class Application {
                 }
                 strBuilder.append(line);
                 //System.out.println(line);
-            } while (!line.startsWith("** logEvent-debug.end")); //TODO: Stöd för mer än debug
+            } while (!line.startsWith("** logEvent-debug.end")); //TODO: Skapa stöd för mer än debug?
 
             return strBuilder.toString();
         }

@@ -3,7 +3,9 @@ package se.skltp.loghandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import se.skltp.loghandler.configs.TjanstekontraktSettingsConfig;
 import se.skltp.loghandler.models.*;
+import se.skltp.loghandler.xml.TjanstekontraktsConfig;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -51,6 +53,9 @@ public class LogpostParserService {
     @Autowired
     private VardgivareDao vardgivareDao;
 
+    @Autowired
+    private TjanstekontraktSettingsConfig tjanstekontraktSettingsConfig;
+
     public synchronized static void addAnlutning(Anslutning anslutning) {
         anslutningar.add(anslutning);
     }
@@ -79,6 +84,9 @@ public class LogpostParserService {
             while (line != null) {
                 if(line.startsWith(SERVICECONTRACT_NAMESPACE)) {
                     tjanstekontrakt = line.substring(SERVICECONTRACT_NAMESPACE.length());
+                    if(!tjanstekontraktInSavelist(tjanstekontrakt)) {
+                        return;
+                    }
                     //System.out.println("tjanstekontrakt:" + tjanstekontrakt);
                 } else if(line.startsWith(ORIGINAL_SERVICECONSUMER_HSAID)) {
                     ursprungligkonsument = line.substring(ORIGINAL_SERVICECONSUMER_HSAID.length());
@@ -122,6 +130,10 @@ public class LogpostParserService {
         }
 
         addAnlutningar(anslutningar);
+    }
+
+    private boolean tjanstekontraktInSavelist(String tjanstekontrakt) {
+        return tjanstekontraktSettingsConfig.kontraktShoulBeSaved(tjanstekontrakt);
     }
 
     private void parseBodyAndUpdateAnslutning(String line, List<Anslutning> anslutningList) {
