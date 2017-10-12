@@ -76,7 +76,7 @@ public class LogpostMocker {
     }
 
     private static String getTjanstekontrakt() {
-        return LogpostParserService.SERVICECONTRACT_NAMESPACE + "Tjanstekontrakt:test";
+        return LogpostParserService.SERVICECONTRACT_NAMESPACE + "urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2";
     }
 
     private static String getLogStart() {
