@@ -13,6 +13,9 @@ public class TjanstekontraktsConfig {
     @XmlElement(name = "headerparsingconfig")
     public HeaderParsingConfig headerParsingConfig;
 
+    @XmlElement(name = "tjanstekontraktdefault")
+    public TjanstekontraktDefaultConfig tjanstekontraktDefaultConfig;
+
     @XmlElement(name = "tjanstekontrakt")
     public List<TjanstekontraktConfig> tjanstekontrakts;
 }

@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
@@ -101,7 +102,7 @@ public class LogpostParserService {
                         strBuilder.append(line);
                     }
                     List<Anslutning> anslutningList = new ArrayList<>();
-                    parseBodyAndUpdateAnslutning(strBuilder.toString(), anslutningList);
+                    parseBodyAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList);
 
                     for (Anslutning anslutning:anslutningList) {
                         anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt));
@@ -126,13 +127,21 @@ public class LogpostParserService {
         addAnlutningar(anslutningar);
     }
 
-    private void parseBodyAndUpdateAnslutning(String line, List<Anslutning> anslutningList) {
+    private void parseBodyAndUpdateAnslutning(String line, TjanstekontraktConfig tjanstekontraktConfig, List<Anslutning> anslutningList) {
+
+        String kallsystem = tjanstekontraktConfig.kallsystemConfig != null ? tjanstekontraktConfig.kallsystemConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.kallsystemConfig.getElement();
+        String kategori = tjanstekontraktConfig.kategoriConfig != null ? tjanstekontraktConfig.kategoriConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.kategoriConfig.getElement();
+        String vardgivare = tjanstekontraktConfig.vardgivareConfig != null ? tjanstekontraktConfig.vardgivareConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.vardgivareConfig.getElement();
+        String vardenhet = tjanstekontraktConfig.vardenhetConfig != null ? tjanstekontraktConfig.vardenhetConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.vardenhetConfig.getElement();
+        String organisatoriskenhet = tjanstekontraktConfig.organisatoriskEnhetConfig != null ? tjanstekontraktConfig.organisatoriskEnhetConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.organisatoriskEnhetConfig.getElement();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         InputStream in = new ByteArrayInputStream(line.getBytes());
         XMLEventReader eventReader = null;
 
-        String lastElement = "";
+        Stack<String> elementHierarchy = new Stack<>();
+
+        //String lastElement = "";
         try {
             eventReader = inputFactory.createXMLEventReader(in);
 
@@ -140,37 +149,27 @@ public class LogpostParserService {
             while(eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
                 if(event.isStartDocument()) {
-                    //System.out.println("StartDocument: " + event.toString());
                 } else if(event.isStartElement()) {
-                    //System.out.println("StartElement: " + event.toString());
-                    //System.out.println("-" + event.asStartElement().getName().getLocalPart());
-                    lastElement = event.asStartElement().getName().getLocalPart();
+                    elementHierarchy.add(event.asStartElement().getName().getLocalPart());
                 } else if(event.isCharacters()) {
-                    //System.out.println("Characters: " + event.toString());
-                    //System.out.println("-" + event.asCharacters().getData());
-                    switch (lastElement) {
-                        case "sourceSystemHSAid": if(anslutning != null) {anslutningList.add(anslutning);}
-                            anslutning = new Anslutning();
-                            anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
-                            break;
-                        case "healthcareProfessionalCareGiverHSAId":
-                            anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
-                            break;
-                        case "healthcareProfessionalCareUnitHSAId":
-                            anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
-                            break;
-                        case "orgUnitHSAId":
-                            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
-                            break;
-                        case "assessmentCategory":
-                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
-                            break;
+                    if(elementHierarchy.peek().equals(kallsystem)) {
+                        if(anslutning != null) {
+                            anslutningList.add(anslutning);
+                        }
+                        anslutning = new Anslutning();
+                        anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                    } else if (elementHierarchy.peek().equals(vardgivare)) {
+                        anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                    } else if (elementHierarchy.peek().equals(vardenhet)) {
+                        anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                    } else if (elementHierarchy.peek().equals(organisatoriskenhet)) {
+                        anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                    } else if (elementHierarchy.peek().equals(kategori)) {
+                        anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                     }
                 } else if(event.isEndElement()) {
-                    //System.out.println("EndElement: " + event.toString());
-                    //System.out.println("-" + event.asEndElement().getName().getLocalPart());
+                    elementHierarchy.pop();
                 } else if(event.isEndDocument()) {
-                    //System.out.println("EndDocument: " + event.toString());
                 }
             }
         } catch (XMLStreamException e) {

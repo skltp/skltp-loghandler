@@ -6,7 +6,20 @@
         <originalconsumerproperty property="-originalServiceconsumerHsaid="/>
         <payloadproperty property="Payload="/>
     </headerparsingconfig>
+    <tjanstekontraktdefault>
+        <kallsystem element="sourceSystemHSAid"/>
+        <kategori element="assessmentCategory"/>
+        <vardgivare element="healthcareProfessionalCareGiverHSAId"/>
+        <vardenhet element="healthcareProfessionalCareUnitHSAId"/>
+        <organisatoriskenhet element="orgUnitHSAId"/>
+    </tjanstekontraktdefault>
     <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2">
-
+    </tjanstekontrakt>
+    <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponderTest:999">
+        <kallsystem element="sourceSystemHSAidTest"/>
+        <kategori element="assessmentCategoryTest"/>
+        <vardgivare element="healthcareProfessionalCareGiverHSAIdTest"/>
+        <vardenhet element="healthcareProfessionalCareUnitHSAIdTest"/>
+        <organisatoriskenhet element="orgUnitHSAIdTest"/>
     </tjanstekontrakt>
 </tjanstekontrakts>

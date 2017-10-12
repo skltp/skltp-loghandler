@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import se.skltp.loghandler.xml.HeaderParsingConfig;
 import se.skltp.loghandler.xml.TjanstekontraktConfig;
+import se.skltp.loghandler.xml.TjanstekontraktDefaultConfig;
 import se.skltp.loghandler.xml.TjanstekontraktsConfig;
 
 import javax.xml.bind.JAXBContext;
@@ -29,6 +30,8 @@ public class TjanstekontraktSettingsConfig {
     public static String dateFormat;
     public static String payloadProperty;
 
+    public static TjanstekontraktDefaultConfig tjanstekontraktDefaultConfig;
+
     private Map<String, TjanstekontraktConfig> tjanstekontraktsMap;
 
     @Bean
@@ -48,6 +51,8 @@ public class TjanstekontraktSettingsConfig {
         dateRegexp = tjanstekontraktsConfigObject.headerParsingConfig.dateformatConfig.getDateregexp();
         dateFormat = tjanstekontraktsConfigObject.headerParsingConfig.dateformatConfig.getDateformat();
         payloadProperty = tjanstekontraktsConfigObject.headerParsingConfig.payloadConfig.getProperty();
+
+        tjanstekontraktDefaultConfig = tjanstekontraktsConfigObject.tjanstekontraktDefaultConfig;
 
         return tjanstekontraktsConfigObject;
     }
