@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import se.skltp.loghandler.configs.TjanstekontraktSettingsConfig;
 import se.skltp.loghandler.models.dao.*;
 import se.skltp.loghandler.models.entity.Anslutning;
+import se.skltp.loghandler.xml.TjanstekontraktConfig;
 
+import javax.annotation.PostConstruct;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -18,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -25,12 +28,6 @@ import java.util.regex.Pattern;
  */
 @Service
 public class LogpostParserService {
-
-    public static final String SERVICECONTRACT_NAMESPACE = "-servicecontract_namespace=";
-    public static final String ORIGINAL_SERVICECONSUMER_HSAID = "-originalServiceconsumerHsaid=";
-    public static final String LOG_DATE_FORMAT = "yyyy-MM-dd hh:mm:ss";
-
-    private static List<Anslutning> anslutningar = new ArrayList<>();
 
     @Autowired
     private TjanstekontraktDao tjanstekontraktDao;
@@ -56,17 +53,17 @@ public class LogpostParserService {
     @Autowired
     private TjanstekontraktSettingsConfig tjanstekontraktSettingsConfig;
 
+    private static List<Anslutning> anslutningar = new ArrayList<>();
+
     public synchronized static void addAnlutning(Anslutning anslutning) {
         anslutningar.add(anslutning);
     }
 
     public synchronized static void addAnlutningar(List<Anslutning> anslutningar) {
-        System.out.println("Running addAnlutningar, adding: " + anslutningar.size());
         LogpostParserService.anslutningar.addAll(anslutningar);
     }
 
     public synchronized static List<Anslutning> getLatestAnlutningar() {
-        System.out.println("Running getLatestAnlutningar, number of anslutningar: " + anslutningar.size());
         List<Anslutning> latestAnslutningar = anslutningar;
         anslutningar = new ArrayList<>();
         return latestAnslutningar;
@@ -78,38 +75,35 @@ public class LogpostParserService {
         String tjanstekontrakt = "";
         String ursprungligkonsument = "";
         Date vpdate = null;
+        TjanstekontraktConfig tjanstekontraktConfig = null;
 
         try (BufferedReader reader = new BufferedReader(new StringReader(logpost))) {
             String line = reader.readLine();
             while (line != null) {
-                if(line.startsWith(SERVICECONTRACT_NAMESPACE)) {
-                    tjanstekontrakt = line.substring(SERVICECONTRACT_NAMESPACE.length());
-                    if(!tjanstekontraktInSavelist(tjanstekontrakt)) {
+                if(line.startsWith(TjanstekontraktSettingsConfig.contractNameProperty)) {
+                    tjanstekontrakt = line.substring(TjanstekontraktSettingsConfig.contractNameProperty.length());
+                    tjanstekontraktConfig = tjanstekontraktSettingsConfig.getTjanstekontraktConfigOnName(tjanstekontrakt);
+                    if(tjanstekontraktConfig == null) {
                         return;
                     }
-                    //System.out.println("tjanstekontrakt:" + tjanstekontrakt);
-                } else if(line.startsWith(ORIGINAL_SERVICECONSUMER_HSAID)) {
-                    ursprungligkonsument = line.substring(ORIGINAL_SERVICECONSUMER_HSAID.length());
-                    //System.out.println("ursprungligkonsument:" + ursprungligkonsument);
-                } else if(Pattern.matches("\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d.*", line)) {
-                    //System.out.println("dateline:" + line);
+                } else if(line.startsWith(TjanstekontraktSettingsConfig.originalConsumerProperty)) {
+                    ursprungligkonsument = line.substring(TjanstekontraktSettingsConfig.originalConsumerProperty.length());
+                } else if(Pattern.matches(TjanstekontraktSettingsConfig.dateRegexp, line)) {
                     String datestring = line.substring(0,19);
-                    DateFormat format = new SimpleDateFormat(LOG_DATE_FORMAT);
+                    DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
                     vpdate = format.parse(datestring);
-                } else if(line.contains("<SOAP-ENV:Envelope")) {
+                } else if(line.contains(TjanstekontraktSettingsConfig.payloadProperty)) {
                     StringBuilder strBuilder = new StringBuilder();
-                    strBuilder.append(line);
+                    strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
 
                     while(!line.contains("</SOAP-ENV:Envelope>")) {
                         line = reader.readLine();
                         strBuilder.append(line);
                     }
                     List<Anslutning> anslutningList = new ArrayList<>();
-                    //System.out.println("bodyline:" + strBuilder.toString());
                     parseBodyAndUpdateAnslutning(strBuilder.toString(), anslutningList);
 
                     for (Anslutning anslutning:anslutningList) {
-                        anslutning.setOldest(vpdate); //TODO: Ska bara sättas vid nya poster
                         anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt));
                         anslutning.setYoungest(vpdate);
                         anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument));
@@ -130,10 +124,6 @@ public class LogpostParserService {
         }
 
         addAnlutningar(anslutningar);
-    }
-
-    private boolean tjanstekontraktInSavelist(String tjanstekontrakt) {
-        return tjanstekontraktSettingsConfig.kontraktShoulBeSaved(tjanstekontrakt);
     }
 
     private void parseBodyAndUpdateAnslutning(String line, List<Anslutning> anslutningList) {

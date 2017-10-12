@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <tjanstekontrakts>
+    <headerparsingconfig>
+        <dateformat dateregexp="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*" dateformat="yyyy-MM-dd hh:mm:ss"/>
+        <contractnameproperty property="-servicecontract_namespace="/>
+        <originalconsumerproperty property="-originalServiceconsumerHsaid="/>
+        <payloadproperty property="Payload="/>
+    </headerparsingconfig>
     <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2">
 
     </tjanstekontrakt>

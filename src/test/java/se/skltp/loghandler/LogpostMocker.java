@@ -1,5 +1,7 @@
 package se.skltp.loghandler;
 
+import se.skltp.loghandler.configs.TjanstekontraktSettingsConfig;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,8 +34,12 @@ public class LogpostMocker {
     private static String getMockPayload() {
         StringBuilder stringBuilder = new StringBuilder();
 
+        stringBuilder.append(TjanstekontraktSettingsConfig.payloadProperty+"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+        stringBuilder.append(System.lineSeparator());
         stringBuilder.append("<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:s='http://www.w3.org/2001/XMLSchema'>");
+        stringBuilder.append(System.lineSeparator());
         stringBuilder.append(getSoapBody());
+        stringBuilder.append(System.lineSeparator());
         stringBuilder.append("</SOAP-ENV:Envelope>");
 
         return stringBuilder.toString();
@@ -72,16 +78,16 @@ public class LogpostMocker {
     }
 
     private static String getUrsprungligkonsument() {
-        return LogpostParserService.ORIGINAL_SERVICECONSUMER_HSAID + "Konsument";
+        return TjanstekontraktSettingsConfig.originalConsumerProperty + "Konsument";
     }
 
     private static String getTjanstekontrakt() {
-        return LogpostParserService.SERVICECONTRACT_NAMESPACE + "urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2";
+        return TjanstekontraktSettingsConfig.contractNameProperty + "urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2";
     }
 
     private static String getLogStart() {
         Date date = new Date();
-        DateFormat format = new SimpleDateFormat(LogpostParserService.LOG_DATE_FORMAT);
+        DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
         return format.format(date) + "DEBUG.";
     }
 }

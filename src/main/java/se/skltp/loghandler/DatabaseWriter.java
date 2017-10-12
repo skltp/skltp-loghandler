@@ -25,6 +25,7 @@ public class DatabaseWriter {
             Anslutning anslutning = anslutningDao.getByExample(a);
             if(anslutning == null) {
                 anslutning = a;
+                anslutning.setOldest(anslutning.getYoungest());
             } else {
                 anslutning.setYoungest(a.getYoungest());
             }
