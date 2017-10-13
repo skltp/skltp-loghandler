@@ -1,5 +1,7 @@
 package se.skltp.loghandler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -8,7 +10,6 @@ import se.skltp.loghandler.models.dao.*;
 import se.skltp.loghandler.models.entity.Anslutning;
 import se.skltp.loghandler.xml.TjanstekontraktConfig;
 
-import javax.annotation.PostConstruct;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -21,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 /**
@@ -29,6 +29,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class LogpostParserService {
+
+    private static final Logger logger = LogManager.getLogger(LogpostParserService.class);
 
     public static final String SOAP_ENV_ENVELOPE_END = "</SOAP-ENV:Envelope>";
 
@@ -122,8 +124,16 @@ public class LogpostParserService {
             }
         } catch (IOException exc) {
             exc.printStackTrace();
+            logger.error("Oväntat IOException" , exc);
         } catch (ParseException e) {
             e.printStackTrace();
+            logger.error("Oväntat ParseException" , e);
+        }
+
+        if(logger.isDebugEnabled()) {
+            for (Anslutning a :anslutningar) {
+                logger.debug("Adding anslutning: " + a.toString());
+            }
         }
 
         addAnlutningar(anslutningar);
@@ -176,6 +186,7 @@ public class LogpostParserService {
             }
         } catch (XMLStreamException e) {
             e.printStackTrace();
+            logger.debug("Oväntat XMLStreamException", e);
         }
     }
 }

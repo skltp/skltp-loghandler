@@ -2,3 +2,4 @@
 *.iml
 skltp-loghandler/target/
 target/
+skltp-loghandler-app/logs/

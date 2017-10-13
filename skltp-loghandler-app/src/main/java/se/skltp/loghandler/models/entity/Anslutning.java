@@ -147,4 +147,18 @@ public class Anslutning {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Anslutning{" +
+                "vardgivare=" + vardgivare +
+                ", vardenhet=" + vardenhet +
+                ", organisatoriskenhet=" + organisatoriskenhet +
+                ", tjanstekontrakt=" + tjanstekontrakt +
+                ", kategori=" + kategori +
+                ", kallsystem=" + kallsystem +
+                ", oldest=" + oldest +
+                ", youngest=" + youngest +
+                ", ursprungligkonsument=" + ursprungligkonsument +
+                '}';
+    }
 }
