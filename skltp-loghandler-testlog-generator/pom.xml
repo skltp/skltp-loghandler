@@ -5,7 +5,6 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>se.skltp.loghandler</groupId>
   <artifactId>skltp-loghandler-testlog-generator</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
@@ -18,12 +17,28 @@
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <start-class>se.skltp.loghandler.Generator</start-class>
+    <java.version>1.8</java.version>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>se.skltp.loghandler</groupId>
       <artifactId>skltp-loghandler-app</artifactId>
 	  <version>1.0.0-SNAPSHOT</version>
     </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-api</artifactId>
+        <version>2.3</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>2.3</version>
+      </dependency>
   </dependencies>
 
 
