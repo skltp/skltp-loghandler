@@ -30,6 +30,8 @@ import java.util.regex.Pattern;
 @Service
 public class LogpostParserService {
 
+    public static final String SOAP_ENV_ENVELOPE_END = "</SOAP-ENV:Envelope>";
+
     @Autowired
     private TjanstekontraktDao tjanstekontraktDao;
 
@@ -97,7 +99,7 @@ public class LogpostParserService {
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
 
-                    while(!line.contains("</SOAP-ENV:Envelope>")) {
+                    while(!line.contains(SOAP_ENV_ENVELOPE_END)) {
                         line = reader.readLine();
                         strBuilder.append(line);
                     }
