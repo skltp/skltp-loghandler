@@ -184,6 +184,7 @@ public class LogpostParserService {
                 } else if(event.isEndDocument()) {
                 }
             }
+            anslutningList.add(anslutning);
         } catch (XMLStreamException e) {
             e.printStackTrace();
             logger.debug("Oväntat XMLStreamException", e);
