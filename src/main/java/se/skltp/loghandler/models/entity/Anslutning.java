@@ -1,5 +1,7 @@
 package se.skltp.loghandler.models.entity;
 
+import org.springframework.cglib.core.HashCodeCustomizer;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -114,4 +116,35 @@ public class Anslutning {
     public void setUrsprungligkonsument(Ursprungligkonsument ursprungligkonsument) {
         this.ursprungligkonsument = ursprungligkonsument;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Anslutning that = (Anslutning) o;
+
+        if (vardgivare != null ? !vardgivare.equals(that.vardgivare) : that.vardgivare != null) return false;
+        if (vardenhet != null ? !vardenhet.equals(that.vardenhet) : that.vardenhet != null) return false;
+        if (organisatoriskenhet != null ? !organisatoriskenhet.equals(that.organisatoriskenhet) : that.organisatoriskenhet != null)
+            return false;
+        if (tjanstekontrakt != null ? !tjanstekontrakt.equals(that.tjanstekontrakt) : that.tjanstekontrakt != null)
+            return false;
+        if (kategori != null ? !kategori.equals(that.kategori) : that.kategori != null) return false;
+        if (kallsystem != null ? !kallsystem.equals(that.kallsystem) : that.kallsystem != null) return false;
+        return ursprungligkonsument != null ? ursprungligkonsument.equals(that.ursprungligkonsument) : that.ursprungligkonsument == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = vardgivare != null ? vardgivare.hashCode() : 0;
+        result = 31 * result + (vardenhet != null ? vardenhet.hashCode() : 0);
+        result = 31 * result + (organisatoriskenhet != null ? organisatoriskenhet.hashCode() : 0);
+        result = 31 * result + (tjanstekontrakt != null ? tjanstekontrakt.hashCode() : 0);
+        result = 31 * result + (kategori != null ? kategori.hashCode() : 0);
+        result = 31 * result + (kallsystem != null ? kallsystem.hashCode() : 0);
+        result = 31 * result + (ursprungligkonsument != null ? ursprungligkonsument.hashCode() : 0);
+        return result;
+    }
+
 }

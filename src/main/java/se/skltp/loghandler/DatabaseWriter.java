@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import se.skltp.loghandler.models.entity.Anslutning;
 import se.skltp.loghandler.models.dao.AnslutningDao;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by parlin on 2017-10-02.
@@ -19,9 +19,13 @@ public class DatabaseWriter {
 
     @Scheduled(fixedDelay = 5000)
     public void handleAnslutningar() {
-        System.out.println("Running handleAnslutningar");
         List<Anslutning> anslutningar = LogpostParserService.getLatestAnlutningar();
+        Set<Anslutning> anslutningarSet = new HashSet<>();
         for (Anslutning a : anslutningar) {
+            anslutningarSet.add(a);
+        }
+
+        anslutningarSet.forEach(a -> {
             Anslutning anslutning = anslutningDao.getByExample(a);
             if(anslutning == null) {
                 anslutning = a;
@@ -31,6 +35,6 @@ public class DatabaseWriter {
             }
 
             anslutningDao.update(anslutning);
-        }
+        });
     }
 }
