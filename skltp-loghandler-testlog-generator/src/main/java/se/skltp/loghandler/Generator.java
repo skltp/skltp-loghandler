@@ -12,7 +12,10 @@ public class Generator {
     static Logger logger = LogManager.getLogger(Generator.class);
 
     public static void main(String[] args) {
-        logger.error(getLogText());
+        int antalPoster = args.length > 0 ? Integer.parseInt(args[0]) : 1;
+        for(int i = 0; i < antalPoster; i++){
+            logger.error(getLogText());
+        }
     }
 
     private static String getLogText() {

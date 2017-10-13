@@ -1,5 +1,7 @@
 package se.skltp.loghandler;
 
+import org.apache.logging.log4j.core.impl.Log4jLogEvent;
+import org.slf4j.event.LoggingEvent;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -70,12 +72,19 @@ public class Application {
     private class MyDeserializer implements Deserializer<String> {
         @Override
         public String deserialize(InputStream inputStream) throws IOException {
-            //ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(inputStream));
-            //LoggingEvent event = (LoggingEvent) ois.readObject();
-            //return event.toString();
+            ObjectInputStream ois = new ObjectInputStream(inputStream);
+            //LoggingEvent event = null;
+            Log4jLogEvent event = null; //Används av log4j 2.1 för 2.3 används koden ovan
+            try {
+                event = (Log4jLogEvent)ois.readObject();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            //return event != null ? event.getMessage() : "";
+            return event != null ? event.getMessage().toString() : ""; //Används av log4j 2.1 för 2.3 används koden ovan
 
             //Kod för test via telnet
-            StringBuilder strBuilder = new StringBuilder();
+            /*StringBuilder strBuilder = new StringBuilder();
             BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             do {
@@ -87,7 +96,7 @@ public class Application {
                 //System.out.println(line);
             } while (!line.startsWith("** logEvent-debug.end")); //TODO: Skapa stöd för mer än debug?
 
-            return strBuilder.toString();
+            return strBuilder.toString();*/
         }
     }
 

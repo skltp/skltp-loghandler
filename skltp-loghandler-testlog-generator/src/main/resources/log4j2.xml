@@ -2,8 +2,8 @@
 <Configuration status="warn" name="LogGenerator" packages="se.skltp.loghandler">
     <Appenders>
         <Socket name="loghandlerSocket" host="localhost" port="9999">
-            <!--SerializedLayout />-->
-            <PatternLayout pattern="%msg%n"/>
+            <SerializedLayout />
+            <!--<PatternLayout pattern="%msg%n"/>-->
         </Socket>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%msg%n"/>
