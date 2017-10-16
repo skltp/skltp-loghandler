@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="LogGenerator" packages="se.skltp.loghandler">
     <Appenders>
-        <Socket name="loghandlerSocket" host="localhost" port="9999">
+        <Socket name="loghandlerSocket" host="localhost" port="8888" protocol="UDP">
             <SerializedLayout />
             <!--<PatternLayout pattern="%msg%n"/>-->
         </Socket>

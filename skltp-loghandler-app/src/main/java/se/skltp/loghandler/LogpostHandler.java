@@ -20,6 +20,5 @@ public class LogpostHandler {
 
     public void addLogpost(String logPost) {
         logpostParserService.parseLogpost(logPost);
-        System.out.println("Parsed Logpost");
     }
 }
