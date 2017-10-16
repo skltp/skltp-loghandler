@@ -4,6 +4,11 @@ package se.skltp.loghandler;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+
 
 /**
  * Created by martul on 2017-10-13.
@@ -11,11 +16,27 @@ import org.apache.logging.log4j.LogManager;
 public class Generator {
     static Logger logger = LogManager.getLogger(Generator.class);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         int antalPoster = args.length > 0 ? Integer.parseInt(args[0]) : 1;
         for(int i = 0; i < antalPoster; i++){
-            logger.error(getLogText());
+           logger.error(generateLog());
         }
+
+    }
+
+    private static PresetValuesConfig getPresetValues() throws JAXBException {
+        File file = new File("src/main/resources/PresetValuesConfig.xml"); // förbättra
+        JAXBContext jaxbContext = JAXBContext.newInstance(PresetValuesConfig.class);
+
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        PresetValuesConfig presetValuesConfig = (PresetValuesConfig) jaxbUnmarshaller.unmarshal(file);
+        return presetValuesConfig;
+    }
+
+    private static String generateLog() throws JAXBException {
+        PresetValuesConfig presetValuesConfig = getPresetValues();
+        //generate random data
+        return  getLogText();
     }
 
     private static String getLogText() {

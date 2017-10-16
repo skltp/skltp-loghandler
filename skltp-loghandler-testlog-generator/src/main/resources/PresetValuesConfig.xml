@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<testLogGenerator>
+    <vardgivarna>
+        <vardgivare>1</vardgivare>
+        <vardgivare>2</vardgivare>
+    </vardgivarna>
+
+    <vardenheterna>
+        <vardenhet>1</vardenhet>
+        <vardenhet>3</vardenhet>
+        <vardenhet>5</vardenhet>
+    </vardenheterna>
+
+    <organisatoriskenheterna>
+        <organisatoriskenhet>1</organisatoriskenhet>
+        <organisatoriskenhet>2</organisatoriskenhet>
+    </organisatoriskenheterna>
+
+    <tjanstekontrakterna>
+        <tjanstekontrakt>1</tjanstekontrakt>
+        <tjanstekontrakt>2</tjanstekontrakt>
+    </tjanstekontrakterna>
+
+    <katrgorier>
+        <katrgori>1</katrgori>
+        <katrgori>2</katrgori>
+    </katrgorier>
+
+    <kallsystemen>
+        <kallsystem>1</kallsystem>
+    </kallsystemen>
+
+    <ursprungligkonsumenterna>
+        <ursprungligkonsument>test1</ursprungligkonsument>
+        <ursprungligkonsument>test2</ursprungligkonsument>
+    </ursprungligkonsumenterna>
+</testLogGenerator>
