@@ -21,4 +21,7 @@ public class TjanstekontraktDefaultConfig {
 
     @XmlElement(name = "organisatoriskenhet")
     public OrganisatoriskEnhetConfig organisatoriskEnhetConfig;
+
+    @XmlElement(name = "huvudelement")
+    public HuvudelementConfig huvudelementConfig;
 }

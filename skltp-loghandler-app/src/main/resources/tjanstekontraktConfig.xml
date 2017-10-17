@@ -12,6 +12,7 @@
         <vardgivare element="healthcareProfessionalCareGiverHSAId"/>
         <vardenhet element="healthcareProfessionalCareUnitHSAId"/>
         <organisatoriskenhet element="orgUnitHSAId"/>
+        <huvudelement element="careDocumentation"/>
     </tjanstekontraktdefault>
     <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2">
     </tjanstekontrakt>
@@ -21,5 +22,6 @@
         <vardgivare element="healthcareProfessionalCareGiverHSAIdTest"/>
         <vardenhet element="healthcareProfessionalCareUnitHSAIdTest"/>
         <organisatoriskenhet element="orgUnitHSAIdTest"/>
+        <huvudelement element="careDocumentationTest"/>
     </tjanstekontrakt>
 </tjanstekontrakts>

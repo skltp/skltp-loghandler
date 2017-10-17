@@ -1,26 +1,17 @@
 package se.skltp.loghandler;
 
 import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 import org.apache.logging.log4j.core.net.server.ObjectInputStreamLogEventBridge;
 import org.apache.logging.log4j.core.net.server.TcpSocketServer;
 import org.apache.logging.log4j.core.net.server.UdpSocketServer;
-import org.slf4j.event.LoggingEvent;
+import org.apache.logging.log4j.message.Message;
+import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.serializer.Deserializer;
-import org.springframework.integration.annotation.ServiceActivator;
-import org.springframework.integration.annotation.Transformer;
-import org.springframework.integration.channel.DirectChannel;
-import org.springframework.integration.ip.tcp.TcpReceivingChannelAdapter;
-import org.springframework.integration.ip.tcp.connection.AbstractServerConnectionFactory;
-import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
-import org.springframework.integration.transformer.ObjectToStringTransformer;
-import org.springframework.messaging.MessageChannel;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -46,7 +37,7 @@ public class Application {
     public TcpSocketServer<ObjectInputStream> tcpSocketServer() throws IOException {
         return new TcpSocketServer(9999, new ObjectInputStreamLogEventBridge()){
             public void log(final LogEvent event) {
-                LogpostHandler.instance.addLogpost(event.getMessage().toString());
+                LogpostHandler.instance.addLogpost(event.getMessage().getFormattedMessage());
             }
         };
     }
@@ -55,7 +46,7 @@ public class Application {
     public UdpSocketServer<ObjectInputStream> udpSocketServer() throws IOException {
         return new UdpSocketServer(8888, new ObjectInputStreamLogEventBridge()){
             public void log(final LogEvent event) {
-                LogpostHandler.instance.addLogpost(event.getMessage().toString());
+                LogpostHandler.instance.addLogpost(event.getMessage().getFormattedMessage());
             }
         };
     }

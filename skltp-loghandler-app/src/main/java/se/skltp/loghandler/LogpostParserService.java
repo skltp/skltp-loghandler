@@ -146,14 +146,13 @@ public class LogpostParserService {
         String vardgivare = tjanstekontraktConfig.vardgivareConfig != null ? tjanstekontraktConfig.vardgivareConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.vardgivareConfig.getElement();
         String vardenhet = tjanstekontraktConfig.vardenhetConfig != null ? tjanstekontraktConfig.vardenhetConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.vardenhetConfig.getElement();
         String organisatoriskenhet = tjanstekontraktConfig.organisatoriskEnhetConfig != null ? tjanstekontraktConfig.organisatoriskEnhetConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.organisatoriskEnhetConfig.getElement();
+        String huvudelement = tjanstekontraktConfig.huvudelementConfig != null ? tjanstekontraktConfig.huvudelementConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.huvudelementConfig.getElement();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
         InputStream in = new ByteArrayInputStream(line.getBytes());
         XMLEventReader eventReader = null;
 
         Stack<String> elementHierarchy = new Stack<>();
-
-        //String lastElement = "";
         try {
             eventReader = inputFactory.createXMLEventReader(in);
 
@@ -162,13 +161,12 @@ public class LogpostParserService {
                 XMLEvent event = eventReader.nextEvent();
                 if(event.isStartDocument()) {
                 } else if(event.isStartElement()) {
+                    if(huvudelement.equals(event.asStartElement().getName().getLocalPart())) {
+                        anslutning = new Anslutning();
+                    }
                     elementHierarchy.add(event.asStartElement().getName().getLocalPart());
                 } else if(event.isCharacters()) {
                     if(elementHierarchy.peek().equals(kallsystem)) {
-                        if(anslutning != null) {
-                            anslutningList.add(anslutning);
-                        }
-                        anslutning = new Anslutning();
                         anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                     } else if (elementHierarchy.peek().equals(vardgivare)) {
                         anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
@@ -180,11 +178,13 @@ public class LogpostParserService {
                         anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
                     }
                 } else if(event.isEndElement()) {
+                    if(huvudelement.equals(event.asEndElement().getName().getLocalPart())) {
+                        anslutningList.add(anslutning);
+                    }
                     elementHierarchy.pop();
                 } else if(event.isEndDocument()) {
                 }
             }
-            anslutningList.add(anslutning);
         } catch (XMLStreamException e) {
             e.printStackTrace();
             logger.debug("Oväntat XMLStreamException", e);
