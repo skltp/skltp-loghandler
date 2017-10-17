@@ -33,7 +33,7 @@ public class LogpostParserServiceTest {
         logpostParserService.parseLogpost(LogpostMocker.getMockLogpost());
         Thread.sleep(1000);
         List<Anslutning> latestAnlutningar = LogpostParserService.getLatestAnlutningar();
-        Assert.assertEquals(1, latestAnlutningar.size());
+        Assert.assertEquals(2, latestAnlutningar.size());
     }
 
 

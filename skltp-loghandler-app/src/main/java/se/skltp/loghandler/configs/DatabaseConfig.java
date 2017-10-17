@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * Contains database configurations.
  */
 @Configuration
-@EnableCaching
 @EnableTransactionManagement
 public class DatabaseConfig {
 
