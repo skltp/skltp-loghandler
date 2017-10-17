@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import se.skltp.loghandler.LogpostHandler;
+import se.skltp.loghandler.sockerservers.LoghandlerTcpSocketServer;
+import se.skltp.loghandler.sockerservers.LoghandlerUdpSocketServer;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.concurrent.Executor;
 
 /**
  * Created by parlin on 2017-10-10.
@@ -34,20 +33,12 @@ public class SocketServerConfig {
 
     @Bean
     public TcpSocketServer<ObjectInputStream> tcpSocketServer() throws IOException {
-        return new TcpSocketServer(Integer.parseInt(env.getProperty("tcpsocket.port")), new ObjectInputStreamLogEventBridge()){
-            public void log(final LogEvent event) {
-                LogpostHandler.instance.addLogpost(event.getMessage().getFormattedMessage());
-            }
-        };
+        return new LoghandlerTcpSocketServer(Integer.parseInt(env.getProperty("tcpsocket.port")));
     }
 
     @Bean
     public UdpSocketServer<ObjectInputStream> udpSocketServer() throws IOException {
-        return new UdpSocketServer(Integer.parseInt(env.getProperty("udpsocket.port")), new ObjectInputStreamLogEventBridge()){
-            public void log(final LogEvent event) {
-                LogpostHandler.instance.addLogpost(event.getMessage().getFormattedMessage());
-            }
-        };
+        return new LoghandlerUdpSocketServer(Integer.parseInt(env.getProperty("udpsocket.port")));
     }
 
     @PostConstruct
@@ -61,4 +52,5 @@ public class SocketServerConfig {
             udpThread.start();
         }
     }
+
 }
