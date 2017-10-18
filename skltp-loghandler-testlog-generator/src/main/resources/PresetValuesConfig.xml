@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <testLogGenerator>
     <vardgivarna>
-        <vardgivare>1</vardgivare>
-        <vardgivare>2</vardgivare>
+        <vardgivare>SE2321000164-0000000000003</vardgivare>
+        <vardgivare>SE2321000164-0000000000004</vardgivare>
     </vardgivarna>
 
     <vardenheterna>
-        <vardenhet>1</vardenhet>
-        <vardenhet>3</vardenhet>
-        <vardenhet>5</vardenhet>
+        <vardenhet>SE2321000164-1234567891011</vardenhet>
+        <vardenhet>SE2321000164-1234567891012</vardenhet>
+        <vardenhet>SE2321000164-1234567891033</vardenhet>
     </vardenheterna>
 
     <organisatoriskenheterna>
-        <organisatoriskenhet>1</organisatoriskenhet>
-        <organisatoriskenhet>2</organisatoriskenhet>
+        <organisatoriskenhet>SE2321000164-1111111111111</organisatoriskenhet>
+        <organisatoriskenhet>SE2321000164-1111111111112</organisatoriskenhet>
     </organisatoriskenheterna>
 
     <tjanstekontrakterna>
-        <tjanstekontrakt>1</tjanstekontrakt>
-        <tjanstekontrakt>2</tjanstekontrakt>
+        <tjanstekontrakt>GetCareDocumentation</tjanstekontrakt>
     </tjanstekontrakterna>
 
     <katrgorier>
@@ -27,11 +26,12 @@
     </katrgorier>
 
     <kallsystemen>
-        <kallsystem>1</kallsystem>
+        <kallsystem>SE2321000164-9999</kallsystem>
+        <kallsystem>SE2321000164-2222</kallsystem>
     </kallsystemen>
 
     <ursprungligkonsumenterna>
-        <ursprungligkonsument>test1</ursprungligkonsument>
-        <ursprungligkonsument>test2</ursprungligkonsument>
+        <ursprungligkonsument>T_SERVICES_SE165565594230-5555</ursprungligkonsument>
+        <ursprungligkonsument>T_SERVICES_SE165565594230-6666</ursprungligkonsument>
     </ursprungligkonsumenterna>
 </testLogGenerator>
