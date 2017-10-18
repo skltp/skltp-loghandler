@@ -8,6 +8,7 @@ import java.io.File;
  * Created by martul on 2017-10-17.
  */
 public class PresetValuesService {
+
     public  PresetValuesConfig getPresetValues() {
         PresetValuesConfig presetValuesConfig;
         try {
@@ -33,7 +34,6 @@ public class PresetValuesService {
         presetValuesConfig.addOrganisatoriskenhet("SE2321000164-7381037594780");
         presetValuesConfig.addKatrgori("");
         presetValuesConfig.addKallsystem("SE2321000164-1004");
-
         return presetValuesConfig;
     }
 
