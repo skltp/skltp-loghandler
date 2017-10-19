@@ -109,11 +109,11 @@ public class LogpostParserService {
                     parseBodyAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList);
 
                     for (Anslutning anslutning:anslutningList) {
-                        anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt));
+                        anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt).getId());
                         anslutning.setYoungest(vpdate);
-                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument));
-                        if(anslutning.getKategori() == null) {
-                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew(""));
+                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument).getId());
+                        if(anslutning.getKategori() == 0) {
+                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("").getId());
                         }
                     }
 
@@ -167,15 +167,15 @@ public class LogpostParserService {
                     elementHierarchy.add(event.asStartElement().getName().getLocalPart());
                 } else if(event.isCharacters()) {
                     if(elementHierarchy.peek().equals(kallsystem)) {
-                        anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                        anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
                     } else if (elementHierarchy.peek().equals(vardgivare)) {
-                        anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                        anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
                     } else if (elementHierarchy.peek().equals(vardenhet)) {
-                        anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                        anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
                     } else if (elementHierarchy.peek().equals(organisatoriskenhet)) {
-                        anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                        anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
                     } else if (elementHierarchy.peek().equals(kategori)) {
-                        anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()));
+                        anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
                     }
                 } else if(event.isEndElement()) {
                     if(huvudelement.equals(event.asEndElement().getName().getLocalPart())) {

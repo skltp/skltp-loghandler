@@ -58,13 +58,13 @@ public class DatabaseWriterTest {
         List<Anslutning> anslutningar = new ArrayList<>();
         for (int i = 0; i < 3 ; i++) {
             Anslutning anslutning = new Anslutning();
-            anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew("Kontrakt:" + i));
-            anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew("Kallsystem:" + i ));
-            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("Kategori:" + i));
-            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew("OrganisatoriskEnhet:" +i));
-            anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew("UrsprungligKonsument:"+i));
-            anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew("Vardenhet:" +i));
-            anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew("Vardgivare:" +i));
+            anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew("Kontrakt:" + i).getId());
+            anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew("Kallsystem:" + i ).getId());
+            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("Kategori:" + i).getId());
+            anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew("OrganisatoriskEnhet:" +i).getId());
+            anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew("UrsprungligKonsument:"+i).getId());
+            anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew("Vardenhet:" +i).getId());
+            anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew("Vardgivare:" +i).getId());
             anslutning.setYoungest(new Date());
             anslutning.setOldest(new Date());
             anslutningar.add(anslutning);

@@ -34,11 +34,9 @@
         <AsyncLogger name="se.skltp.loghandler" level="debug" includeLocation="true">
             <AppenderRef ref="FileAppenderDebug" level="debug"/>
             <AppenderRef ref="FileAppender" level="info"/>
-            <AppenderRef ref="ConsoleAppender" />
         </AsyncLogger>
-
         <Root level="info">
-            <AppenderRef ref="ConsoleAppender" />
+            <AppenderRef ref="ConsoleAppender" level="error"/>
         </Root>
     </Loggers>
 </Configuration>
