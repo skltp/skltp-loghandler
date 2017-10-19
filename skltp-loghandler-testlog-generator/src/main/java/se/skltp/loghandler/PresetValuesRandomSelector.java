@@ -15,7 +15,7 @@ import java.util.Random;
 public class PresetValuesRandomSelector {
     private Random random;
     private PresetValuesConfig config;
-    private  SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss,S");
+    private  SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,S");
 
     public PresetValuesRandomSelector(PresetValuesConfig config){
         this.config = config;
