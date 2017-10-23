@@ -32,7 +32,7 @@
     </Appenders>
     <Loggers>
         <AsyncLogger name="se.skltp.loghandler" level="info" includeLocation="true">
-            <AppenderRef ref="FileAppenderDebug" level="debug"/>
+            <!--<AppenderRef ref="FileAppenderDebug" level="debug"/>-->
             <AppenderRef ref="FileAppender" level="info"/>
         </AsyncLogger>
         <Root level="info">
