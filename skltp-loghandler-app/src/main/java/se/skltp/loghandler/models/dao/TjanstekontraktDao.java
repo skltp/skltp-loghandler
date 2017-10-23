@@ -26,6 +26,11 @@ public class TjanstekontraktDao extends AnslutningChildDao<Tjanstekontrakt>{
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "TjanstekontraktById";
+    }
+
+    @Override
     protected Class<Tjanstekontrakt> getEntityClass() {
         return Tjanstekontrakt.class;
     }

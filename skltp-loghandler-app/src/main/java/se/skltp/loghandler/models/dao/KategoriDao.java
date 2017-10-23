@@ -26,6 +26,11 @@ public class KategoriDao extends AnslutningChildDao<Kategori> {
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "KategoriById";
+    }
+
+    @Override
     protected Class<Kategori> getEntityClass() {
         return Kategori.class;
     }

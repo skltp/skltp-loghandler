@@ -6,7 +6,8 @@ import javax.persistence.*;
  * Created by parlin on 2017-10-03.
  */
 @Entity
-@NamedQueries({ @NamedQuery(name = "KallsystemByName", query = "SELECT o FROM Kallsystem o where o.name=:name")})
+@NamedQueries({ @NamedQuery(name = "KallsystemByName", query = "SELECT o FROM Kallsystem o where o.name=:name"),
+        @NamedQuery(name = "KallsystemById", query = "SELECT o FROM Kallsystem o where o.id=:id")})
 public class Kallsystem extends AnslutningChild {
 
 }

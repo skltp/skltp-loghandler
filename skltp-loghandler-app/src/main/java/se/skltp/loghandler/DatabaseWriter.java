@@ -24,13 +24,19 @@ public class DatabaseWriter {
     @Scheduled(fixedDelay = 5000)
     public void handleAnslutningar() {
         List<Anslutning> anslutningar = LogpostParserService.getLatestAnlutningar();
-        logger.debug("DatabaseWriter hanterar anslutningar, antal: " + anslutningar.size());
+        if(anslutningar.isEmpty()) {
+            return;
+        }
+        if(logger.isDebugEnabled()) {
+            logger.debug("DatabaseWriter hanterar anslutningar, antal: " + anslutningar.size());
+        }
         Set<Anslutning> anslutningarSet = new HashSet<>();
         for (Anslutning a : anslutningar) {
             anslutningarSet.add(a);
         }
-
-        logger.debug("DatabaseWriter sparar anslutningar efter rensning av dubletter, antal: " + anslutningarSet.size());
+        if(logger.isDebugEnabled()) {
+            logger.debug("DatabaseWriter sparar anslutningar efter rensning av dubletter, antal: " + anslutningarSet.size());
+        }
         anslutningarSet.forEach(a -> {
             Anslutning anslutning = anslutningDao.getByExample(a);
             if(anslutning == null) {

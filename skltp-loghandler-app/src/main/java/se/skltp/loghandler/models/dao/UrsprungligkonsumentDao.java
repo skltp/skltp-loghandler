@@ -26,6 +26,11 @@ public class UrsprungligkonsumentDao extends AnslutningChildDao<Ursprungligkonsu
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "UrsprungligkonsumentById";
+    }
+
+    @Override
     protected Class<Ursprungligkonsument> getEntityClass() {
         return Ursprungligkonsument.class;
     }

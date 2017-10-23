@@ -26,6 +26,11 @@ public class VardgivareDao extends AnslutningChildDao<Vardgivare> {
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "VardgivareById";
+    }
+
+    @Override
     protected Class<Vardgivare> getEntityClass() {
         return Vardgivare.class;
     }

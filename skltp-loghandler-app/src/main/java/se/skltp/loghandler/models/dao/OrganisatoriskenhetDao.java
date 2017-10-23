@@ -26,6 +26,11 @@ public class OrganisatoriskenhetDao extends AnslutningChildDao<Organisatoriskenh
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "OrganisatoriskenhetById";
+    }
+
+    @Override
     protected Class<Organisatoriskenhet> getEntityClass() {
         return Organisatoriskenhet.class;
     }

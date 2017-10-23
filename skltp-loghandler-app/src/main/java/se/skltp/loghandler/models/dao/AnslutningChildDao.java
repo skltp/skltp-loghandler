@@ -41,5 +41,14 @@ public abstract class AnslutningChildDao<T extends AnslutningChild> {
 
     protected abstract String getNameQueryName();
 
+    protected abstract String getNameQueryId();
+
     protected abstract Class<T> getEntityClass();
+
+    public String getbyId(long id) {
+        TypedQuery<T> query = entityManager.createNamedQuery(getNameQueryId(), getEntityClass());
+        query.setParameter("id", id);
+        List<T> resultList = query.getResultList();
+        return resultList.size() > 0 ? resultList.get(0).getName() : "";
+    }
 }

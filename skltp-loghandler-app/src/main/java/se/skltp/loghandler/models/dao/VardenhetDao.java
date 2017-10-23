@@ -26,6 +26,11 @@ public class VardenhetDao extends AnslutningChildDao<Vardenhet> {
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "VardenhetById";
+    }
+
+    @Override
     protected Class<Vardenhet> getEntityClass() {
         return Vardenhet.class;
     }

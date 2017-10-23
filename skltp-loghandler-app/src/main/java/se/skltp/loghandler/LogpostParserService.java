@@ -79,6 +79,7 @@ public class LogpostParserService {
         List<Anslutning> anslutningar = new ArrayList<>();
         String tjanstekontrakt = "";
         String ursprungligkonsument = "";
+        String datestring = "";
         Date vpdate = null;
         TjanstekontraktConfig tjanstekontraktConfig = null;
 
@@ -94,28 +95,18 @@ public class LogpostParserService {
                 } else if(line.startsWith(TjanstekontraktSettingsConfig.originalConsumerProperty)) {
                     ursprungligkonsument = line.substring(TjanstekontraktSettingsConfig.originalConsumerProperty.length());
                 } else if(Pattern.matches(TjanstekontraktSettingsConfig.dateRegexp, line)) {
-                    String datestring = line.substring(0,19);
+                    datestring = line.substring(0,19);
                     DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
                     vpdate = format.parse(datestring);
                 } else if(line.contains(TjanstekontraktSettingsConfig.payloadProperty)) {
                     StringBuilder strBuilder = new StringBuilder();
                     strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
-
                     while(!line.contains(SOAP_ENV_ENVELOPE_END)) {
                         line = reader.readLine();
                         strBuilder.append(line);
                     }
                     List<Anslutning> anslutningList = new ArrayList<>();
-                    parseBodyAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList);
-
-                    for (Anslutning anslutning:anslutningList) {
-                        anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt).getId());
-                        anslutning.setYoungest(vpdate);
-                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument).getId());
-                        if(anslutning.getKategori() == 0) {
-                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("").getId());
-                        }
-                    }
+                    parsePayloadAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList, tjanstekontrakt, ursprungligkonsument, vpdate);
 
                     anslutningar.addAll(anslutningList);
                 }
@@ -125,9 +116,17 @@ public class LogpostParserService {
         } catch (IOException exc) {
             exc.printStackTrace();
             logger.error("Oväntat IOException" , exc);
+            logger.error("\nIOException inträffade när kända värden på anslutningen var:"
+                    + "\n tjanstekontrakt: " + tjanstekontrakt
+                    + "\n ursprungligkonsument: " + ursprungligkonsument
+                    + "\n datestring: " + datestring);
         } catch (ParseException e) {
             e.printStackTrace();
             logger.error("Oväntat ParseException" , e);
+            logger.error("\nParseException inträffade när kända värden på anslutningen var:"
+                    + "\n tjanstekontrakt: " + tjanstekontrakt
+                    + "\n ursprungligkonsument: " + ursprungligkonsument
+                    + "\n datestring: " + datestring);
         }
 
         if(logger.isDebugEnabled()) {
@@ -139,7 +138,7 @@ public class LogpostParserService {
         addAnlutningar(anslutningar);
     }
 
-    private void parseBodyAndUpdateAnslutning(String line, TjanstekontraktConfig tjanstekontraktConfig, List<Anslutning> anslutningList) {
+    private void parsePayloadAndUpdateAnslutning(String payload, TjanstekontraktConfig tjanstekontraktConfig, List<Anslutning> anslutningList, String tjanstekontrakt, String ursprungligkonsument, Date vpdate) {
 
         String kallsystem = tjanstekontraktConfig.kallsystemConfig != null ? tjanstekontraktConfig.kallsystemConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.kallsystemConfig.getElement();
         String kategori = tjanstekontraktConfig.kategoriConfig != null ? tjanstekontraktConfig.kategoriConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.kategoriConfig.getElement();
@@ -149,36 +148,42 @@ public class LogpostParserService {
         String huvudelement = tjanstekontraktConfig.huvudelementConfig != null ? tjanstekontraktConfig.huvudelementConfig.getElement() : TjanstekontraktSettingsConfig.tjanstekontraktDefaultConfig.huvudelementConfig.getElement();
 
         XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-        InputStream in = new ByteArrayInputStream(line.getBytes());
+        InputStream in = new ByteArrayInputStream(payload.getBytes());
         XMLEventReader eventReader = null;
 
         Stack<String> elementHierarchy = new Stack<>();
+        Anslutning anslutning = null;
         try {
             eventReader = inputFactory.createXMLEventReader(in);
 
-            Anslutning anslutning = null;
             while(eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
                 if(event.isStartDocument()) {
                 } else if(event.isStartElement()) {
                     if(huvudelement.equals(event.asStartElement().getName().getLocalPart())) {
                         anslutning = new Anslutning();
+                        anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt).getId());
+                        anslutning.setYoungest(vpdate);
+                        anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument).getId());
                     }
                     elementHierarchy.add(event.asStartElement().getName().getLocalPart());
                 } else if(event.isCharacters()) {
                     if(elementHierarchy.peek().equals(kallsystem)) {
-                        anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
+                        anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     } else if (elementHierarchy.peek().equals(vardgivare)) {
-                        anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
+                        anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     } else if (elementHierarchy.peek().equals(vardenhet)) {
-                        anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
+                        anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     } else if (elementHierarchy.peek().equals(organisatoriskenhet)) {
-                        anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
+                        anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     } else if (elementHierarchy.peek().equals(kategori)) {
-                        anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData().toString()).getId());
+                        anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     }
                 } else if(event.isEndElement()) {
                     if(huvudelement.equals(event.asEndElement().getName().getLocalPart())) {
+                        if(anslutning.getKategori() == 0) {
+                            anslutning.setKategori(kategoriDao.getByNameCreateIfNew("").getId());
+                        }
                         anslutningList.add(anslutning);
                     }
                     elementHierarchy.pop();
@@ -187,7 +192,35 @@ public class LogpostParserService {
             }
         } catch (XMLStreamException e) {
             e.printStackTrace();
-            logger.debug("Oväntat XMLStreamException", e);
+            logger.error("Oväntat XMLStreamException", e);
+            StringBuilder elementHierarchyStringBuilder = new StringBuilder();
+            elementHierarchy.iterator().forEachRemaining(s -> elementHierarchyStringBuilder.append(" -> "+s));
+            DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
+            String datestring = vpdate == null ? "" : format.format(vpdate);
+
+            if(anslutning == null) {
+                logger.error("\nXMLStreamException inträffade innan anslutningens huvudelement var hittat. Kända värden på anslutningen var:"
+                        + "\n tjanstekontrakt: " + tjanstekontrakt
+                        + "\n ursprungligkonsument: " + ursprungligkonsument
+                        + "\n vpdate: " + datestring
+                        + "\n elementHierarchy vid Exception: " + elementHierarchyStringBuilder.toString());
+            } else {
+                String kallsystemName = anslutning.getKallsystem() == 0 ? "" : kallsystemDao.getbyId(anslutning.getKallsystem());
+                String vardgivareName = anslutning.getVardgivare() == 0 ? "" : vardgivareDao.getbyId(anslutning.getVardgivare());
+                String vardenhetName = anslutning.getVardenhet() == 0 ? "" : vardenhetDao.getbyId(anslutning.getVardenhet());
+                String organisatoriskenhetName = anslutning.getOrganisatoriskenhet() == 0 ? "" : organisatoriskenhetDao.getbyId(anslutning.getOrganisatoriskenhet());
+                String kategoriName = anslutning.getKategori() == 0 ? "" : kategoriDao.getbyId(anslutning.getKategori());
+                logger.error("\nXMLStreamException inträffade när kända värden på anslutningen var:"
+                        + "\n tjanstekontrakt: " + tjanstekontrakt
+                        + "\n ursprungligkonsument: " + ursprungligkonsument
+                        + "\n vpdate: " + datestring
+                        + "\n källsystem: " + kallsystemName
+                        + "\n vardgivare: " + vardgivareName
+                        + "\n vardenhet: " + vardenhetName
+                        + "\n organisatoriskenhet: " + organisatoriskenhetName
+                        + "\n kategori: " + kategoriName
+                        + "\n elementHierarchy vid Exception:" + elementHierarchyStringBuilder.toString());
+            }
         }
     }
 }

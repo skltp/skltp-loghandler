@@ -9,8 +9,8 @@
         <Console name="ConsoleAppender" target="SYSTEM_OUT" follow="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
-        <RollingFile name="FileAppender" fileName="logs/skltp-loghandler.log"
-                     filePattern="logs/skltp-loghandler-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppender" fileName="target/logs/skltp-loghandler.log"
+                     filePattern="target/logs/skltp-loghandler-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -19,8 +19,8 @@
             </Policies>
             <DefaultRolloverStrategy max="10"/>
         </RollingFile>
-        <RollingFile name="FileAppenderDebug" fileName="logs/skltp-loghandler-debug.log"
-                     filePattern="logs/skltp-loghandler-debug-%d{yyyy-MM-dd}-%i.log">
+        <RollingFile name="FileAppenderDebug" fileName="target/logs/skltp-loghandler-debug.log"
+                     filePattern="target/logs/skltp-loghandler-debug-%d{yyyy-MM-dd}-%i.log">
             <PatternLayout>
                 <Pattern>${LOG_PATTERN}</Pattern>
             </PatternLayout>
@@ -31,7 +31,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <AsyncLogger name="se.skltp.loghandler" level="debug" includeLocation="true">
+        <AsyncLogger name="se.skltp.loghandler" level="info" includeLocation="true">
             <AppenderRef ref="FileAppenderDebug" level="debug"/>
             <AppenderRef ref="FileAppender" level="info"/>
         </AsyncLogger>

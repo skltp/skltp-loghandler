@@ -26,6 +26,11 @@ public class KallsystemDao extends AnslutningChildDao<Kallsystem> {
     }
 
     @Override
+    protected String getNameQueryId() {
+        return "KallsystemById";
+    }
+
+    @Override
     protected Class<Kallsystem> getEntityClass() {
         return Kallsystem.class;
     }
