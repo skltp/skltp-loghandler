@@ -99,16 +99,21 @@ public class LogpostParserService {
                     DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
                     vpdate = format.parse(datestring);
                 } else if(line.contains(TjanstekontraktSettingsConfig.payloadProperty)) {
-                    StringBuilder strBuilder = new StringBuilder();
-                    strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
-                    while(!line.contains(SOAP_ENV_ENVELOPE_END)) {
-                        line = reader.readLine();
-                        strBuilder.append(line);
-                    }
-                    List<Anslutning> anslutningList = new ArrayList<>();
-                    parsePayloadAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList, tjanstekontrakt, ursprungligkonsument, vpdate);
+                    //Ingen idé att parsa payloaden om inte allt som förväntas hittas innan detta finns.
+                    if(!tjanstekontrakt.equals("") && !ursprungligkonsument.equals("") && vpdate != null) {
+                        StringBuilder strBuilder = new StringBuilder();
+                        strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
+                        while(!line.contains(SOAP_ENV_ENVELOPE_END)) {
+                            line = reader.readLine();
+                            strBuilder.append(line);
+                        }
+                        List<Anslutning> anslutningList = new ArrayList<>();
+                        parsePayloadAndUpdateAnslutning(strBuilder.toString(), tjanstekontraktConfig, anslutningList, tjanstekontrakt, ursprungligkonsument, vpdate);
 
-                    anslutningar.addAll(anslutningList);
+                        anslutningar.addAll(anslutningList);
+                    } else {
+                        throw new NotAllHeaderValuesException();
+                    }
                 }
 
                 line = reader.readLine();
@@ -117,16 +122,17 @@ public class LogpostParserService {
             exc.printStackTrace();
             logger.error("Oväntat IOException" , exc);
             logger.error("\nIOException inträffade när kända värden på anslutningen var:"
-                    + "\n tjanstekontrakt: " + tjanstekontrakt
-                    + "\n ursprungligkonsument: " + ursprungligkonsument
-                    + "\n datestring: " + datestring);
+                    + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring));
         } catch (ParseException e) {
             e.printStackTrace();
             logger.error("Oväntat ParseException" , e);
             logger.error("\nParseException inträffade när kända värden på anslutningen var:"
-                    + "\n tjanstekontrakt: " + tjanstekontrakt
-                    + "\n ursprungligkonsument: " + ursprungligkonsument
-                    + "\n datestring: " + datestring);
+                    + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring));
+        } catch (NotAllHeaderValuesException e) {
+            e.printStackTrace();
+            logger.error("Oväntat NotAllHeaderValuesException" , e);
+            logger.error("\nNotAllHeaderValuesException inträffade när kända värden på anslutningen var:"
+                    + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring));
         }
 
         if(logger.isDebugEnabled()) {
@@ -136,6 +142,12 @@ public class LogpostParserService {
         }
 
         addAnlutningar(anslutningar);
+    }
+
+    private String getStringForHeaderException(String tjanstekontrakt, String ursprungligkonsument, String datestring) {
+        return "\n tjanstekontrakt: " + tjanstekontrakt
+                + "\n ursprungligkonsument: " + ursprungligkonsument
+                + "\n datestring: " + datestring;
     }
 
     private void parsePayloadAndUpdateAnslutning(String payload, TjanstekontraktConfig tjanstekontraktConfig, List<Anslutning> anslutningList, String tjanstekontrakt, String ursprungligkonsument, Date vpdate) {
@@ -200,9 +212,7 @@ public class LogpostParserService {
 
             if(anslutning == null) {
                 logger.error("\nXMLStreamException inträffade innan anslutningens huvudelement var hittat. Kända värden på anslutningen var:"
-                        + "\n tjanstekontrakt: " + tjanstekontrakt
-                        + "\n ursprungligkonsument: " + ursprungligkonsument
-                        + "\n vpdate: " + datestring
+                        + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring)
                         + "\n elementHierarchy vid Exception: " + elementHierarchyStringBuilder.toString());
             } else {
                 String kallsystemName = anslutning.getKallsystem() == 0 ? "" : kallsystemDao.getbyId(anslutning.getKallsystem());
@@ -222,5 +232,8 @@ public class LogpostParserService {
                         + "\n elementHierarchy vid Exception:" + elementHierarchyStringBuilder.toString());
             }
         }
+    }
+
+    private class NotAllHeaderValuesException extends Exception {
     }
 }
