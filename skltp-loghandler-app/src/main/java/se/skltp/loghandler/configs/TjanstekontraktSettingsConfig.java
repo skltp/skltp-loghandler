@@ -3,6 +3,7 @@ package se.skltp.loghandler.configs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import se.skltp.loghandler.xml.HeaderParsingConfig;
 import se.skltp.loghandler.xml.TjanstekontraktConfig;
 import se.skltp.loghandler.xml.TjanstekontraktDefaultConfig;
@@ -22,7 +23,12 @@ import java.util.Map;
 public class TjanstekontraktSettingsConfig {
 
     @Autowired
+    private Environment env;
+
+    @Autowired
     private TjanstekontraktsConfig tjanstekontraktsConfig;
+
+    private static final String configName = "tjanstekontraktConfig.xml";
 
     public static String contractNameProperty;
     public static String originalConsumerProperty;
@@ -36,7 +42,15 @@ public class TjanstekontraktSettingsConfig {
 
     @Bean
     public TjanstekontraktsConfig tjanstekontraktsConfig() throws JAXBException {
-        File fileNytt = new File("src/main/resources/tjanstekontraktConfig.xml");
+        String configDir = env.getProperty("spring.config.location");
+
+        File fileNytt;
+        if(configDir == null) {
+            fileNytt = new File("src/main/resources/" + configName);
+        } else {
+            fileNytt = new File(configDir + configName);
+        }
+
         JAXBContext jaxbContext = JAXBContext.newInstance(TjanstekontraktsConfig.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         TjanstekontraktsConfig tjanstekontraktsConfigObject = (TjanstekontraktsConfig) jaxbUnmarshaller.unmarshal(fileNytt);
