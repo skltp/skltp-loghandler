@@ -3,16 +3,17 @@
     <Appenders>
         <Socket name="loghandlerSocket" host="localhost" port="8888" protocol="UDP">
             <SerializedLayout />
-            <!--<PatternLayout pattern="%msg%n"/>-->
         </Socket>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%msg%n"/>
+        <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d [%p] %c{1} - %m%n "/>
         </Console>
     </Appenders>
     <Loggers>
-        <Root level="info">
-            <AppenderRef ref="Console" level="warn"/>
-            <AppenderRef ref="loghandlerSocket"/>
+        <Root>
+            <AppenderRef ref="console" level="warn"/>
         </Root>
+        <logger name="se.skltp.loghandler.LogPusherApplication" level="info">
+            <AppenderRef ref="loghandlerSocket"/>
+        </logger>
     </Loggers>
 </Configuration>

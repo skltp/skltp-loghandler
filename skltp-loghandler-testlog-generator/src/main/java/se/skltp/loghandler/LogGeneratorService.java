@@ -9,7 +9,7 @@ public class LogGeneratorService {
 
 
     public LogGeneratorService(){
-        PresetValuesService valuesService = new PresetValuesService();
+        PresetValuesConfigService valuesService = new PresetValuesConfigService();
         valuesRandomGenerator = new PresetValuesRandomSelector(valuesService.getPresetValues());
     }
 
