@@ -1,5 +1,7 @@
 package se.skltp.loghandler.configs;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +23,7 @@ import java.util.Map;
  */
 @Configuration
 public class TjanstekontraktSettingsConfig {
-
+    private static Logger logger = LogManager.getLogger(TjanstekontraktSettingsConfig.class);
     @Autowired
     private Environment env;
 
@@ -50,6 +52,8 @@ public class TjanstekontraktSettingsConfig {
         } else {
             fileNytt = new File(configDir + configName);
         }
+
+//        logger.warn("---------------config " + fileNytt.getAbsolutePath());
 
         JAXBContext jaxbContext = JAXBContext.newInstance(TjanstekontraktsConfig.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
