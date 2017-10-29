@@ -25,4 +25,17 @@
     <relativePath />
   </parent>
 
+  <distributionManagement>
+    <repository>
+      <id>basefarm-nexus</id>
+      <name>RIVTA-Releases</name>
+      <url>http://ine-dib-nexus1.in1.sth.basefarm.net:8081/repository/RIVTA-Releases/</url>
+    </repository>
+    <snapshotRepository>
+      <id>basefarm-nexus</id>
+      <name>RIVTA-Snapshots</name>
+      <url>http://ine-dib-nexus1.in1.sth.basefarm.net:8081/repository/RIVTA-Snapshots/</url>
+    </snapshotRepository>
+  </distributionManagement>
+
 </project>
