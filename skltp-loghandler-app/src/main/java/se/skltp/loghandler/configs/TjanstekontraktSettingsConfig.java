@@ -47,13 +47,12 @@ public class TjanstekontraktSettingsConfig {
         String configDir = env.getProperty("spring.config.location");
 
         File fileNytt;
-        if(configDir == null) {
-            fileNytt = new File("src/main/resources/" + configName);
-        } else {
+        if(configDir != null) {
             fileNytt = new File(configDir + configName);
+        } else {
+            logger.warn("Har inte hittat System variabel 'spring.config.location'. Försöker hitta config filler här 'src/main/resources/'.");
+            fileNytt = new File("src/main/resources/" + configName);
         }
-
-//        logger.warn("---------------config " + fileNytt.getAbsolutePath());
 
         JAXBContext jaxbContext = JAXBContext.newInstance(TjanstekontraktsConfig.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
