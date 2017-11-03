@@ -1,5 +1,5 @@
-CREATE DATABASE  IF NOT EXISTS `anslutningslaget`;
-USE `anslutningslaget`;
+CREATE DATABASE  IF NOT EXISTS `loghandler`;
+USE `loghandler`;
 
 CREATE TABLE `kallsystem` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
