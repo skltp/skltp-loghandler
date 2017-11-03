@@ -17,13 +17,9 @@
         <organisatoriskenhet>SE2321000164-1111111111112</organisatoriskenhet>
     </organisatoriskenheterna>
 
-    <tjanstekontrakterna>
-        <tjanstekontrakt>GetCareDocumentation</tjanstekontrakt>
-    </tjanstekontrakterna>
-
     <katrgorier>
-        <katrgori>1</katrgori>
-        <katrgori>2</katrgori>
+        <katrgori>fun-fun</katrgori>
+        <katrgori>pad-pad</katrgori>
     </katrgorier>
 
     <kallsystemen>

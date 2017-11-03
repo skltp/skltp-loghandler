@@ -49,9 +49,8 @@ public class PresetValuesConfigService {
         presetValuesConfig.addVardgivare("SE2321000164-7381037590003");
         presetValuesConfig.addVardenhet("SE2321000164-7381037594780");
         presetValuesConfig.addUrsprungligkonsument("T_SERVICES_SE165565594230-1062");
-        presetValuesConfig.addTjanstekontrakt("GetCareDocumentation");
         presetValuesConfig.addOrganisatoriskenhet("SE2321000164-7381037594780");
-        presetValuesConfig.addKatrgori("");
+        presetValuesConfig.addKatrgori("fun-fun");
         presetValuesConfig.addKallsystem("SE2321000164-1004");
         return presetValuesConfig;
     }

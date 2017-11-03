@@ -42,10 +42,6 @@ public class PresetValuesRandomSelector {
         return config.kallsystem.get(random.nextInt(config.kallsystem.size()));
     }
 
-    public String getRandomTjanstekontrakt(){
-        return config.tjanstekontrakt.get(random.nextInt(config.tjanstekontrakt.size()));
-    }
-
     public String getRandomUrsprungligkonsument(){
         return config.ursprungligkonsument.get(random.nextInt(config.ursprungligkonsument.size()));
     }
@@ -54,8 +50,8 @@ public class PresetValuesRandomSelector {
         return spf.format(new Date());
     }
 
-    public int getRandomCount(){
-        return  random.nextInt(30);
+    public int getRandomCount(int max){
+        return  random.nextInt(max);
     }
 
 }

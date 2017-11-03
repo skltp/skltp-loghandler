@@ -25,10 +25,6 @@ public class PresetValuesConfig {
     @XmlElement(name = "organisatoriskenhet")
     List<String> organisatoriskenhet;
 
-    @XmlElementWrapper(name="tjanstekontrakterna")
-    @XmlElement(name = "tjanstekontrakt")
-    List<String> tjanstekontrakt;
-
     @XmlElementWrapper(name="katrgorier")
     @XmlElement(name = "katrgori")
     List<String> katrgori;
@@ -63,12 +59,6 @@ public class PresetValuesConfig {
         this.organisatoriskenhet.add(value);
     }
 
-    public void addTjanstekontrakt(String value) {
-        if (tjanstekontrakt == null){
-            this.tjanstekontrakt = new ArrayList<>();
-        }
-        this.tjanstekontrakt.add(value);
-    }
 
     public void addKatrgori(String value) {
         if (katrgori == null){

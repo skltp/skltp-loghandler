@@ -17,7 +17,7 @@ public class LogPusherApplication {
     public static void main(String[] args) throws JAXBException {
         int antalPoster = Integer.parseInt(System.getProperty("n", "1"));
         for (int i = 0; i < antalPoster; i++) {
-            logger.info(logGeneratorService.generateLog());
+            logger.info(logGeneratorService.generateRandomLog());
         }
     }
 }
