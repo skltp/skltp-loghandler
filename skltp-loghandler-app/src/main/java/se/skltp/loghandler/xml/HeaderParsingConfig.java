@@ -18,4 +18,7 @@ public class HeaderParsingConfig {
 
     @XmlElement(name = "payloadproperty")
     public PayloadConfig payloadConfig;
+
+    @XmlElement(name = "envelopeNameproperty")
+    public EnvelopeNameConfig envelopeNameConfig;
 }

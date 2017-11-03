@@ -37,6 +37,7 @@ public class TjanstekontraktSettingsConfig {
     public static String dateRegexp;
     public static String dateFormat;
     public static String payloadProperty;
+    public static String envelopeName;
 
     public static TjanstekontraktDefaultConfig tjanstekontraktDefaultConfig;
 
@@ -48,6 +49,9 @@ public class TjanstekontraktSettingsConfig {
 
         File fileNytt;
         if(configDir != null) {
+            if(configDir.charAt(configDir.length() - 1 ) != '/') {
+                configDir += "/";
+            }
             fileNytt = new File(configDir + configName);
         } else {
             logger.warn("Har inte hittat System variabel 'spring.config.location'. Försöker hitta config filler här 'src/main/resources/'.");
@@ -68,6 +72,7 @@ public class TjanstekontraktSettingsConfig {
         dateRegexp = tjanstekontraktsConfigObject.headerParsingConfig.dateformatConfig.getDateregexp();
         dateFormat = tjanstekontraktsConfigObject.headerParsingConfig.dateformatConfig.getDateformat();
         payloadProperty = tjanstekontraktsConfigObject.headerParsingConfig.payloadConfig.getProperty();
+        envelopeName = tjanstekontraktsConfigObject.headerParsingConfig.envelopeNameConfig.getProperty();
 
         tjanstekontraktDefaultConfig = tjanstekontraktsConfigObject.tjanstekontraktDefaultConfig;
 

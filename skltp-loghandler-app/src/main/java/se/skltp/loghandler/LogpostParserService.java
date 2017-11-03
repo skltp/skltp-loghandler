@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -31,8 +32,6 @@ import java.util.regex.Pattern;
 public class LogpostParserService {
 
     private static final Logger logger = LogManager.getLogger(LogpostParserService.class);
-
-    public static final String SOAP_ENV_ENVELOPE_END = "</SOAP-ENV:Envelope>";
 
     @Autowired
     private TjanstekontraktDao tjanstekontraktDao;
@@ -103,7 +102,7 @@ public class LogpostParserService {
                     if(!tjanstekontrakt.equals("") && !ursprungligkonsument.equals("") && vpdate != null) {
                         StringBuilder strBuilder = new StringBuilder();
                         strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
-                        while(!line.contains(SOAP_ENV_ENVELOPE_END)) {
+                        while(!line.matches(TjanstekontraktSettingsConfig.envelopeName)) {
                             line = reader.readLine();
                             strBuilder.append(line);
                         }

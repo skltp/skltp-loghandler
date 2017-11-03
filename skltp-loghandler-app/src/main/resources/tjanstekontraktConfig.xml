@@ -2,6 +2,7 @@
 <tjanstekontrakts>
     <headerparsingconfig>
         <dateformat dateregexp="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*" dateformat="yyyy-MM-dd HH:mm:ss"/>
+        <envelopeNameproperty property="(&lt;/)[a-zA-Z-]*(:Envelope|:envelope|:ENVELOPE)&gt;"/>
         <contractnameproperty property="-servicecontract_namespace="/>
         <originalconsumerproperty property="-originalServiceconsumerHsaid="/>
         <payloadproperty property="Payload="/>
@@ -23,5 +24,13 @@
         <vardenhet element="healthcareProfessionalCareUnitHSAIdTest"/>
         <organisatoriskenhet element="orgUnitHSAIdTest"/>
         <huvudelement element="careDocumentationTest"/>
+    </tjanstekontrakt>
+    <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetFunctionalStatusResponder:2">
+        <kallsystem element="sourceSystemHSAId"/>
+        <kategori element="assessmentCategory"/>
+        <vardgivare element="healthcareProfessionalCareUnitHSAId"/>
+        <vardenhet element="healthcareProfessionalCareGiverHSAId"/>
+        <organisatoriskenhet element="orgUnitHSAId"/>
+        <huvudelement element="functionalStatusAssessment"/>
     </tjanstekontrakt>
 </tjanstekontrakts>
