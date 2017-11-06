@@ -23,7 +23,7 @@ public abstract class AnslutningChildDao<T extends AnslutningChild> {
         return query.getResultList();
     }
 
-    protected T getByNameCreateIfNew(String name) {
+    protected synchronized T getByNameCreateIfNew(String name) {
         List<T> listOfT = getByName(name);
         if(listOfT.isEmpty()) {
             T instanceOfT = getNewObject();
