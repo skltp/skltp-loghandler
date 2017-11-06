@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn" name="LogGenerator" packages="se.skltp.loghandler">
     <Appenders>
-        <Socket name="loghandlerSocket" host="localhost" port="8888" protocol="UDP">
+        <Socket name="loghandlerSocket" host="localhost" port="9999" protocol="tcp">
             <SerializedLayout />
         </Socket>
         <Console name="console" target="SYSTEM_OUT">
@@ -14,6 +14,9 @@
         </Root>
         <logger name="se.skltp.loghandler.LogPusherApplication" level="info">
             <AppenderRef ref="loghandlerSocket"/>
+        </logger>
+        <logger name="se.skltp.loghandler.LogGeneratorService" level="info">
+            <AppenderRef ref="console"/>
         </logger>
     </Loggers>
 </Configuration>
