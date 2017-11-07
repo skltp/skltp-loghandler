@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assembly
+        xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
+  http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <moduleSets>
+        <moduleSet>
+            <useAllReactorProjects>true</useAllReactorProjects>
+            <includes>
+                <include>se.skltp.loghandler:skltp-loghandler-app</include>
+            </includes>
+            <sources>
+                <includeModuleDirectory>false</includeModuleDirectory>
+                <fileSets>
+                    <fileSet>
+                        <directory>../skltp-loghandler-app/target/</directory>
+                        <outputDirectory></outputDirectory>
+                        <includes>
+                            <include>*.war</include>
+                        </includes>
+                    </fileSet>
+                    <fileSet>
+                        <directory>../installation-resources/sql/</directory>
+                        <outputDirectory>sql</outputDirectory>
+                        <includes>
+                            <include>first-setup.sql</include>
+                        </includes>
+                    </fileSet>
+                    <fileSet>
+                        <directory>../skltp-loghandler-app/src/main/resources/</directory>
+                        <outputDirectory>config</outputDirectory>
+                        <includes>
+                            <include>application.properties</include>
+                            <include>log4j2.xml</include>
+                            <include>tjanstekontraktConfig.xml</include>
+                        </includes>
+                    </fileSet>
+                </fileSets>
+
+            </sources>
+        </moduleSet>
+    </moduleSets>
+</assembly>

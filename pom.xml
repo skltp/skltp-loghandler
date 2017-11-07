@@ -16,7 +16,8 @@
   <modules>
         <module>skltp-loghandler-app</module>
 		<module>skltp-loghandler-testlog-generator</module>
-    </modules>
+        <module>skltp-loghandler-app-package</module>
+  </modules>
   
   <parent>
     <groupId>org.springframework.boot</groupId>
