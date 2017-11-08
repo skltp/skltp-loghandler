@@ -2,7 +2,7 @@
 <tjanstekontrakts>
     <headerparsingconfig>
         <dateformat dateregexp="\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d.*" dateformat="yyyy-MM-dd HH:mm:ss"/>
-        <envelopeNameproperty property="(&lt;/)[a-zA-Z-]*(:Envelope|:envelope|:ENVELOPE)&gt;"/>
+        <envelopeNameproperty property="^(&lt;/)[a-zA-Z-]*(:envelope)&gt;$"/>
         <contractnameproperty property="-servicecontract_namespace="/>
         <originalconsumerproperty property="-originalServiceconsumerHsaid="/>
         <payloadproperty property="Payload="/>

@@ -30,8 +30,8 @@ import java.util.regex.Pattern;
  */
 @Service
 public class LogpostParserService {
-
     private static final Logger logger = LogManager.getLogger(LogpostParserService.class);
+    private Pattern envelopeStringPattern = Pattern.compile(TjanstekontraktSettingsConfig.envelopeName, Pattern.CASE_INSENSITIVE);
 
     @Autowired
     private TjanstekontraktDao tjanstekontraktDao;
@@ -102,8 +102,10 @@ public class LogpostParserService {
                     if(!tjanstekontrakt.equals("") && !ursprungligkonsument.equals("") && vpdate != null) {
                         StringBuilder strBuilder = new StringBuilder();
                         strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
-                        while(!line.matches(TjanstekontraktSettingsConfig.envelopeName)) {
+                        Matcher matcher = envelopeStringPattern.matcher(line);
+                        while(!matcher.find()) {
                             line = reader.readLine();
+                            matcher = envelopeStringPattern.matcher(line);
                             strBuilder.append(line);
                         }
                         List<Anslutning> anslutningList = new ArrayList<>();
