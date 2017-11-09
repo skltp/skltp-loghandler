@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 @Service
 public class LogpostParserService {
     private static final Logger logger = LogManager.getLogger(LogpostParserService.class);
-    private Pattern envelopeStringPattern = Pattern.compile(TjanstekontraktSettingsConfig.envelopeName, Pattern.CASE_INSENSITIVE);
+    private Pattern envelopeStringPattern;
 
     @Autowired
     private TjanstekontraktDao tjanstekontraktDao;
@@ -81,6 +81,10 @@ public class LogpostParserService {
         String datestring = "";
         Date vpdate = null;
         TjanstekontraktConfig tjanstekontraktConfig = null;
+
+        if(envelopeStringPattern == null) {
+            setEnvelopeStringPattern();
+        }
 
         try (BufferedReader reader = new BufferedReader(new StringReader(logpost))) {
             String line = reader.readLine();
@@ -143,6 +147,12 @@ public class LogpostParserService {
         }
 
         addAnlutningar(anslutningar);
+    }
+
+    private synchronized void setEnvelopeStringPattern() {
+        if(envelopeStringPattern == null) {
+            envelopeStringPattern = Pattern.compile(TjanstekontraktSettingsConfig.envelopeName, Pattern.CASE_INSENSITIVE);
+        }
     }
 
     private String getStringForHeaderException(String tjanstekontrakt, String ursprungligkonsument, String datestring) {
