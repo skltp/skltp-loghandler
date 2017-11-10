@@ -75,6 +75,10 @@ public class LogpostParserService {
 
     @Async("logpostParserPool")
     public void parseLogpost(String logpost)  {
+        if(logger.isDebugEnabled()) {
+            logger.debug("Tagit emot logpost och påbörjar parsning.");
+        }
+
         List<Anslutning> anslutningar = new ArrayList<>();
         String tjanstekontrakt = "";
         String ursprungligkonsument = "";
