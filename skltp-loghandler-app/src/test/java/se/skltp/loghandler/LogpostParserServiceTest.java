@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import se.skltp.loghandler.models.entity.Anslutning;
 
 import java.util.List;
+import java.util.Date;
 
 /**
  * Created by parlin on 2017-10-06.
@@ -25,17 +26,14 @@ public class LogpostParserServiceTest {
 
     @Test
     public void testOfullstandigLogpost() throws InterruptedException {
-        logpostParserService.parseLogpost("Test");
-        List<Anslutning> latestAnlutningar = LogpostParserService.getLatestAnlutningar();
-        Assert.assertEquals(0, latestAnlutningar.size());
+        List<Anslutning> list = logpostParserService.parseAndGetAnslutningar(new Date(), "Test");
+        Assert.assertEquals(0, list.size());
     }
 
     @Test
     public void testParseLogpost() throws InterruptedException {
-        logpostParserService.parseLogpost(LogpostMocker.getMockLogpost());
-        Thread.sleep(1000);
-        List<Anslutning> latestAnlutningar = LogpostParserService.getLatestAnlutningar();
-        Assert.assertEquals(2, latestAnlutningar.size());
+        List<Anslutning> list = logpostParserService.parseAndGetAnslutningar(new Date(), LogpostMocker.getMockLogpost());
+        Assert.assertEquals(2, list.size());
     }
 
 

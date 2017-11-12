@@ -34,7 +34,15 @@ public class LogpostMocker {
     private static String getMockPayload() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(TjanstekontraktSettingsConfig.payloadProperty+"<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
+        stringBuilder.append(TjanstekontraktSettingsConfig.payloadProperty+getMockPayloadXml());
+
+        return stringBuilder.toString();
+    }
+
+    public static String getMockPayloadXml() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>");
         stringBuilder.append(System.lineSeparator());
         stringBuilder.append("<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:s='http://www.w3.org/2001/XMLSchema'>");
         stringBuilder.append(System.lineSeparator());

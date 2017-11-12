@@ -31,6 +31,6 @@ public class LoghandlerTcpSocketServer extends TcpSocketServer {
     }
 
     public void log(final LogEvent event) {
-        LogpostHandler.instance.addLogpost(event.getMessage().getFormattedMessage());
+        LogpostHandler.instance.addLogpost(event);
     }
 }

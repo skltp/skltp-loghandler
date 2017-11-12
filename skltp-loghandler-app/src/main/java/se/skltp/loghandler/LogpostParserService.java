@@ -2,6 +2,7 @@ package se.skltp.loghandler;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LogEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 import java.io.*;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,16 +74,26 @@ public class LogpostParserService {
     }
 
     @Async("logpostParserPool")
-    public void parseLogpost(String logpost)  {
+    public void parseLogpost(LogEvent event)  {
         if(logger.isDebugEnabled()) {
             logger.debug("Tagit emot logpost och påbörjar parsning.");
         }
+        Date vpdate = new Date(event.getTimeMillis());
+        String logpost = event.getMessage().getFormattedMessage();
 
+        List<Anslutning> anslutningar = parseAndGetAnslutningar(vpdate, logpost);
+        if (anslutningar == null) return;
+
+        addAnlutningar(anslutningar);
+    }
+
+    public List<Anslutning> parseAndGetAnslutningar(Date vpdate, String logpost) {
         List<Anslutning> anslutningar = new ArrayList<>();
         String tjanstekontrakt = "";
         String ursprungligkonsument = "";
-        String datestring = "";
-        Date vpdate = null;
+        DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
+        String datestring = format.format(vpdate);
+
         TjanstekontraktConfig tjanstekontraktConfig = null;
 
         if(envelopeStringPattern == null) {
@@ -97,22 +107,22 @@ public class LogpostParserService {
                     tjanstekontrakt = line.substring(TjanstekontraktSettingsConfig.contractNameProperty.length());
                     tjanstekontraktConfig = tjanstekontraktSettingsConfig.getTjanstekontraktConfigOnName(tjanstekontrakt);
                     if(tjanstekontraktConfig == null) {
-                        return;
+                        return null;
                     }
                 } else if(line.startsWith(TjanstekontraktSettingsConfig.originalConsumerProperty)) {
                     ursprungligkonsument = line.substring(TjanstekontraktSettingsConfig.originalConsumerProperty.length());
-                } else if(Pattern.matches(TjanstekontraktSettingsConfig.dateRegexp, line)) {
-                    datestring = line.substring(0,19);
-                    DateFormat format = new SimpleDateFormat(TjanstekontraktSettingsConfig.dateFormat);
-                    vpdate = format.parse(datestring);
                 } else if(line.contains(TjanstekontraktSettingsConfig.payloadProperty)) {
                     //Ingen idé att parsa payloaden om inte allt som förväntas hittas innan detta finns.
-                    if(!tjanstekontrakt.equals("") && !ursprungligkonsument.equals("") && vpdate != null) {
+                    if(!tjanstekontrakt.equals("") && !ursprungligkonsument.equals("")) {
                         StringBuilder strBuilder = new StringBuilder();
                         strBuilder.append(line.substring(TjanstekontraktSettingsConfig.payloadProperty.length()));
                         Matcher matcher = envelopeStringPattern.matcher(line);
-                        while(!matcher.find()) {
+                        int lastElement = line.lastIndexOf('<');
+                        int startFrom = lastElement < 0 ? 0 : lastElement;
+                        while(!matcher.find(startFrom)) {
                             line = reader.readLine();
+                            lastElement = line.lastIndexOf('<');
+                            startFrom = lastElement < 0 ? 0 : lastElement;
                             matcher = envelopeStringPattern.matcher(line);
                             strBuilder.append(line);
                         }
@@ -132,11 +142,6 @@ public class LogpostParserService {
             logger.error("Oväntat IOException" , exc);
             logger.error("\nIOException inträffade när kända värden på anslutningen var:"
                     + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring));
-        } catch (ParseException e) {
-            e.printStackTrace();
-            logger.error("Oväntat ParseException" , e);
-            logger.error("\nParseException inträffade när kända värden på anslutningen var:"
-                    + getStringForHeaderException(tjanstekontrakt, ursprungligkonsument, datestring));
         } catch (NotAllHeaderValuesException e) {
             e.printStackTrace();
             logger.error("Oväntat NotAllHeaderValuesException" , e);
@@ -149,8 +154,7 @@ public class LogpostParserService {
                 logger.debug("Adding anslutning: " + a.toString());
             }
         }
-
-        addAnlutningar(anslutningar);
+        return anslutningar;
     }
 
     private synchronized void setEnvelopeStringPattern() {

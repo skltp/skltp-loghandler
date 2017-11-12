@@ -1,5 +1,6 @@
 package se.skltp.loghandler;
 
+import org.apache.logging.log4j.core.LogEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -18,7 +19,7 @@ public class LogpostHandler {
         instance = this;
     }
 
-    public void addLogpost(String logPost) {
-        logpostParserService.parseLogpost(logPost);
+    public void addLogpost(LogEvent event) {
+        logpostParserService.parseLogpost(event);
     }
 }
