@@ -34,7 +34,7 @@ object GetServiceScenario {
   }
     
   def request(serviceName:String, urn:String, responseElement:String, responseItem:String, responseItemUrn:Option[String] = None) = exec(
-        http("GetAggregated" + serviceName + " ${patientid} - ${name}")
+        http("Get" + serviceName + " ${patientid} - ${name}")
           .post("")
           .headers(headers(urn + ":Get" + serviceName))
           .body(ELFileBody("Get" + serviceName + ".xml"))
