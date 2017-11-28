@@ -17,20 +17,15 @@
     </tjanstekontraktdefault>
     <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponder:2">
     </tjanstekontrakt>
-    <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponderTest:999">
+    <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetFunctionalStatusResponder:2">
+        <huvudelement element="functionalStatusAssessment"/>
+    </tjanstekontrakt>
+	<tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetCareDocumentationResponderTest:999">
         <kallsystem element="sourceSystemHSAidTest"/>
         <kategori element="assessmentCategoryTest"/>
         <vardgivare element="healthcareProfessionalCareGiverHSAIdTest"/>
         <vardenhet element="healthcareProfessionalCareUnitHSAIdTest"/>
         <organisatoriskenhet element="orgUnitHSAIdTest"/>
         <huvudelement element="careDocumentationTest"/>
-    </tjanstekontrakt>
-    <tjanstekontrakt name="urn:riv:clinicalprocess:healthcond:description:GetFunctionalStatusResponder:2">
-        <kallsystem element="sourceSystemHSAId"/>
-        <kategori element="assessmentCategory"/>
-        <vardgivare element="healthcareProfessionalCareUnitHSAId"/>
-        <vardenhet element="healthcareProfessionalCareGiverHSAId"/>
-        <organisatoriskenhet element="orgUnitHSAId"/>
-        <huvudelement element="functionalStatusAssessment"/>
     </tjanstekontrakt>
 </tjanstekontrakts>
