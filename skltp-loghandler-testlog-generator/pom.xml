@@ -21,11 +21,6 @@
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>se.skltp.loghandler</groupId>
-      <artifactId>skltp-loghandler-app</artifactId>
-	  <version>1.0.0-RC1-SNAPSHOT</version>
-    </dependency>
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
         <artifactId>log4j-api</artifactId>
