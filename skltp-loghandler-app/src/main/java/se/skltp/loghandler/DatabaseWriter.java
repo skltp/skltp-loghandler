@@ -3,6 +3,7 @@ package se.skltp.loghandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import se.skltp.loghandler.models.entity.Anslutning;
@@ -34,19 +35,29 @@ public class DatabaseWriter {
         for (Anslutning a : anslutningar) {
             anslutningarSet.add(a);
         }
+
+        saveAnslutningar(anslutningarSet);
+    }
+
+    private void saveAnslutningar(Set<Anslutning> anslutningarSet) {
         if(logger.isDebugEnabled()) {
             logger.debug("DatabaseWriter sparar anslutningar efter rensning av dubletter, antal: " + anslutningarSet.size());
         }
         anslutningarSet.forEach(a -> {
-            Anslutning anslutning = anslutningDao.getByExample(a);
-            if(anslutning == null) {
-                anslutning = a;
-                anslutning.setOldest(anslutning.getYoungest());
-            } else {
-                anslutning.setYoungest(a.getYoungest());
+            try {
+                Anslutning anslutning = anslutningDao.getByExample(a);
+                if(anslutning == null) {
+                    anslutning = a;
+                    anslutning.setOldest(anslutning.getYoungest());
+                } else {
+                    anslutning.setYoungest(a.getYoungest());
+                }
+
+                anslutningDao.update(anslutning);
+            } catch (DataIntegrityViolationException e) {
+                logger.error("DatabaseWriter, det gick inte att spara anslutningen till databasen", e);
             }
 
-            anslutningDao.update(anslutning);
         });
     }
 }
