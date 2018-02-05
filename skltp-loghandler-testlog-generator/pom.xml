@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>skltp-loghandler-testlog-generator</artifactId>
-  <version>1.0.0-RC3-SNAPSHOT</version>
+  <version>1.0.0-RC3</version>
 
   <name>skltp-loghandler-testlog-generator</name>
   <description>Genererar logposter i testsyfte</description>
@@ -11,7 +11,7 @@
   <parent>
     <groupId>se.skltp.loghandler</groupId>
     <artifactId>skltp-loghandler</artifactId>
-    <version>1.0.0-RC3-SNAPSHOT</version>
+    <version>1.0.0-RC3</version>
   </parent>
 
   <properties>
