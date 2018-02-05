@@ -194,7 +194,7 @@ public class LogpostParserService {
                     if(huvudelement.equals(event.asStartElement().getName().getLocalPart())) {
                         anslutning = new Anslutning();
                         anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt).getId());
-                        anslutning.setYoungest(vpdate);
+                        anslutning.setSenasteAnslutningsDatum(vpdate);
                         anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew(ursprungligkonsument).getId());
                     }
                     elementHierarchy.add(event.asStartElement().getName().getLocalPart());

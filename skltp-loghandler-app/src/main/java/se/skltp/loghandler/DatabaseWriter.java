@@ -48,9 +48,9 @@ public class DatabaseWriter {
                 Anslutning anslutning = anslutningDao.getByExample(a);
                 if(anslutning == null) {
                     anslutning = a;
-                    anslutning.setOldest(anslutning.getYoungest());
+                    anslutning.setForstaAnslutningsDatum(anslutning.getSenasteAnslutningsDatum());
                 } else {
-                    anslutning.setYoungest(a.getYoungest());
+                    anslutning.setSenasteAnslutningsDatum(a.getSenasteAnslutningsDatum());
                 }
 
                 anslutningDao.update(anslutning);
