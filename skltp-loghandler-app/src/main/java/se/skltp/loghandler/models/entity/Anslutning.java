@@ -1,7 +1,5 @@
 package se.skltp.loghandler.models.entity;
 
-import org.springframework.cglib.core.HashCodeCustomizer;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -25,9 +23,9 @@ public class Anslutning {
 
     private long kallsystem;
 
-    private Date oldest;
+    private Date forstaAnslutningsDatum;
 
-    private Date youngest;
+    private Date senasteAnslutningsDatum;
 
     private long ursprungligkonsument;
 
@@ -87,20 +85,20 @@ public class Anslutning {
         this.kallsystem = kallsystem;
     }
 
-    public Date getOldest() {
-        return oldest;
+    public Date getForstaAnslutningsDatum() {
+        return forstaAnslutningsDatum;
     }
 
-    public void setOldest(Date oldest) {
-        this.oldest = oldest;
+    public void setForstaAnslutningsDatum(Date forstaAnslutningsDatum) {
+        this.forstaAnslutningsDatum = forstaAnslutningsDatum;
     }
 
-    public Date getYoungest() {
-        return youngest;
+    public Date getSenasteAnslutningsDatum() {
+        return senasteAnslutningsDatum;
     }
 
-    public void setYoungest(Date youngest) {
-        this.youngest = youngest;
+    public void setSenasteAnslutningsDatum(Date senasteAnslutningsDatum) {
+        this.senasteAnslutningsDatum = senasteAnslutningsDatum;
     }
 
     public long getUrsprungligkonsument() {
@@ -149,8 +147,8 @@ public class Anslutning {
                 ", tjanstekontrakt=" + tjanstekontrakt +
                 ", kategori=" + kategori +
                 ", kallsystem=" + kallsystem +
-                ", oldest=" + oldest +
-                ", youngest=" + youngest +
+                ", forstaAnslutningsDatum=" + forstaAnslutningsDatum +
+                ", senasteAnslutningsDatum=" + senasteAnslutningsDatum +
                 ", ursprungligkonsument=" + ursprungligkonsument +
                 '}';
     }

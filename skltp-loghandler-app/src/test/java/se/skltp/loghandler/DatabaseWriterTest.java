@@ -67,8 +67,8 @@ public class DatabaseWriterTest {
             anslutning.setUrsprungligkonsument(ursprungligkonsumentDao.getByNameCreateIfNew("UrsprungligKonsument:"+i).getId());
             anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew("Vardenhet:" +i).getId());
             anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew("Vardgivare:" +i).getId());
-            anslutning.setYoungest(new Date());
-            anslutning.setOldest(new Date());
+            anslutning.setSenasteAnslutningsDatum(new Date());
+            anslutning.setForstaAnslutningsDatum(new Date());
             anslutningar.add(anslutning);
         }
 
