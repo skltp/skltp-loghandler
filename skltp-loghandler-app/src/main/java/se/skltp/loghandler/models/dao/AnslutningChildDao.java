@@ -5,8 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.transaction.Transactional;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Repository;
 import se.skltp.loghandler.models.entity.AnslutningChild;
 
@@ -24,6 +24,8 @@ public abstract class AnslutningChildDao<T extends AnslutningChild> {
     }
 
     protected synchronized T getByNameCreateIfNew(String name) {
+    	if(name == null)
+    		name = "";
         List<T> listOfT = getByName(name);
         if(listOfT.isEmpty()) {
             T instanceOfT = getNewObject();

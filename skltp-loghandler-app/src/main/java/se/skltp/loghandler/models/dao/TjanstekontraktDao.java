@@ -1,6 +1,6 @@
 package se.skltp.loghandler.models.dao;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;

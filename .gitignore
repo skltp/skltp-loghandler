@@ -3,3 +3,16 @@
 skltp-loghandler/target/
 target/
 skltp-loghandler-app/logs/
+/skltp-loghandler-app/.classpath
+/.project
+/skltp-loghandler-app/*.project
+/.settings/*.prefs
+/skltp-loghandler-testlog-generator/.settings/org.eclipse.m2e.core.prefs
+/skltp-loghandler-app/.settings/*.jsdtscope
+*.project
+*.prefs
+*.component
+/skltp-loghandler-app/.settings/org.eclipse.wst.common.project.facet.core.xml
+/skltp-loghandler-app/.settings/org.eclipse.wst.jsdt.ui.superType.container
+/skltp-loghandler-app/.settings/org.eclipse.wst.jsdt.ui.superType.name
+*.classpath
