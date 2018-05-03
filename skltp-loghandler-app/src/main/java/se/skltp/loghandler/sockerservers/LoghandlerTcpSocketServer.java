@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 /**
  * Created by parlin on 2017-10-17.
  */
-public class LoghandlerTcpSocketServer extends TcpSocketServer {
+public class LoghandlerTcpSocketServer extends TcpSocketServer<ObjectInputStream> {
 
     private static final Logger localLogger = LogManager.getLogger(LoghandlerTcpSocketServer.class);
 

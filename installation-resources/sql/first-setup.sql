@@ -4,7 +4,7 @@ USE `loghandler`;
 CREATE TABLE `kallsystem` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`).
+  PRIMARY KEY (`id`),
   UNIQUE KEY `name_UNIQUE` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -73,3 +73,26 @@ CREATE TABLE `anslutning` (
   KEY `fk_vardenhet_idx` (`vardenhet`), CONSTRAINT `fk_vardenhet` FOREIGN KEY (`vardenhet`) REFERENCES `vardenhet` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   KEY `fk_vardgivare_idx` (`vardgivare`), CONSTRAINT `fk_vardgivare` FOREIGN KEY (`vardgivare`) REFERENCES `vardgivare` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE 
+VIEW `grupperade_anslutningar` AS
+    SELECT 
+        `a`.`id` AS `id`,
+        `kall`.`name` AS `kallsystem`,
+        `kat`.`name` AS `kategori`,
+        `org`.`name` AS `organisatoriskenhet`,
+        `tjk`.`name` AS `tjanstekontrakt`,
+        `urk`.`name` AS `ursprungligkonsument`,
+        `ve`.`name` AS `vardenhet`,
+        `vg`.`name` AS `vardgivare`,
+        `a`.`forstaAnslutningsDatum` AS `forstaAnslutningsDatum`,
+        `a`.`senasteAnslutningsDatum` AS `senasteAnslutningsDatum`
+    FROM
+        (((((((`anslutning` `a`
+        JOIN `kallsystem` `kall` ON ((`a`.`kallsystem` = `kall`.`id`)))
+        JOIN `kategori` `kat` ON ((`a`.`kategori` = `kat`.`id`)))
+        JOIN `organisatoriskenhet` `org` ON ((`a`.`organisatoriskenhet` = `org`.`id`)))
+        JOIN `tjanstekontrakt` `tjk` ON ((`a`.`tjanstekontrakt` = `tjk`.`id`)))
+        JOIN `ursprungligkonsument` `urk` ON ((`a`.`ursprungligkonsument` = `urk`.`id`)))
+        JOIN `vardenhet` `ve` ON ((`a`.`vardenhet` = `ve`.`id`)))
+        JOIN `vardgivare` `vg` ON ((`a`.`vardgivare` = `vg`.`id`)))

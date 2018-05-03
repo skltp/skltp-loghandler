@@ -6,7 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 import se.skltp.loghandler.models.entity.AnslutningChild;
 
@@ -24,8 +26,13 @@ public abstract class AnslutningChildDao<T extends AnslutningChild> {
     }
 
     protected synchronized T getByNameCreateIfNew(String name) {
-    	if(name == null)
-    		name = "";
+    	try {
+    		return _getByNameCreateIfNew(name);
+        } catch (DataIntegrityViolationException e) {
+        	return _getByNameCreateIfNew(name);    		
+    	}
+    }
+    private synchronized T _getByNameCreateIfNew(String name) {
         List<T> listOfT = getByName(name);
         if(listOfT.isEmpty()) {
             T instanceOfT = getNewObject();
@@ -35,6 +42,7 @@ public abstract class AnslutningChildDao<T extends AnslutningChild> {
         return listOfT.get(0);
     }
 
+    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public T update(T child) {
         return entityManager.merge(child);
     }

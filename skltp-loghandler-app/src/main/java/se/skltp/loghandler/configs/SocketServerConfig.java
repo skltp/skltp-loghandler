@@ -1,14 +1,11 @@
 package se.skltp.loghandler.configs;
 
-import org.apache.logging.log4j.core.LogEvent;
-import org.apache.logging.log4j.core.net.server.ObjectInputStreamLogEventBridge;
 import org.apache.logging.log4j.core.net.server.TcpSocketServer;
 import org.apache.logging.log4j.core.net.server.UdpSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import se.skltp.loghandler.LogpostHandler;
 import se.skltp.loghandler.sockerservers.LoghandlerTcpSocketServer;
 import se.skltp.loghandler.sockerservers.LoghandlerUdpSocketServer;
 
@@ -31,12 +28,14 @@ public class SocketServerConfig {
     @Autowired
     UdpSocketServer<ObjectInputStream> udpSocketServer;
 
-    @Bean
+    @SuppressWarnings("unchecked")
+	@Bean
     public TcpSocketServer<ObjectInputStream> tcpSocketServer() throws IOException {
         return new LoghandlerTcpSocketServer(Integer.parseInt(env.getProperty("tcpsocket.port")));
     }
 
-    @Bean
+    @SuppressWarnings("unchecked")
+	@Bean
     public UdpSocketServer<ObjectInputStream> udpSocketServer() throws IOException {
         return new LoghandlerUdpSocketServer(Integer.parseInt(env.getProperty("udpsocket.port")));
     }

@@ -3,8 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>skltp-loghandler-testlog-generator</artifactId>
-  <version>1.0.0-RC4-SNAPSHOT</version>
-
+  
   <name>skltp-loghandler-testlog-generator</name>
   <description>Genererar logposter i testsyfte</description>
 
