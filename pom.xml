@@ -5,7 +5,7 @@
   <groupId>se.skltp.loghandler</groupId>
   <artifactId>skltp-loghandler</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.0-RC4-SNAPSHOT</version>
 
   <name>skltp-loghandler</name>
   <description>Tar emot, behandlar och sparar logposter från VP</description>
