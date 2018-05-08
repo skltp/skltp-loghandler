@@ -163,7 +163,7 @@ public class LogGeneratorService {
             builder.append("<urn:functionalStatusAssessment>" +
                     "<urn1:functionalStatusAssessmentHeader>" +
                     "<urn1:documentId>JOL-MOCK-GFS-02-01</urn1:documentId>" +
-                    "<urn1:sourceSystemHSAId>").append(randomKallsystem).append("</urn1:sourceSystemHSAId>" +
+                    "<urn1:sourceSystemHSAid>").append(randomKallsystem).append("</urn1:sourceSystemHSAid>" +
                     "<urn1:documentTime>20160202110410</urn1:documentTime>" +
                     "<urn1:patientId>" +
                     "<urn1:id>193601286499</urn1:id>" +
