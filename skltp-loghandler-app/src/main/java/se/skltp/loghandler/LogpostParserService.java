@@ -191,7 +191,7 @@ public class LogpostParserService {
                 XMLEvent event = eventReader.nextEvent();
                 if(event.isStartDocument()) {
                 } else if(event.isStartElement()) {
-                    if(huvudelement.equals(event.asStartElement().getName().getLocalPart())) {
+                    if(huvudelement.equalsIgnoreCase(event.asStartElement().getName().getLocalPart())) {
                         anslutning = new Anslutning();
                         anslutning.setTjanstekontrakt(tjanstekontraktDao.getByNameCreateIfNew(tjanstekontrakt).getId());
                         anslutning.setSenasteAnslutningsDatum(vpdate);
@@ -199,19 +199,19 @@ public class LogpostParserService {
                     }
                     elementHierarchy.add(event.asStartElement().getName().getLocalPart());
                 } else if(event.isCharacters()) {
-                    if(elementHierarchy.peek().equals(kallsystem)) {
+                    if(elementHierarchy.peek().equalsIgnoreCase(kallsystem)) {
                         anslutning.setKallsystem(kallsystemDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
-                    } else if (elementHierarchy.peek().equals(vardgivare)) {
+                    } else if (elementHierarchy.peek().equalsIgnoreCase(vardgivare)) {
                         anslutning.setVardgivare(vardgivareDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
-                    } else if (elementHierarchy.peek().equals(vardenhet)) {
+                    } else if (elementHierarchy.peek().equalsIgnoreCase(vardenhet)) {
                         anslutning.setVardenhet(vardenhetDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
-                    } else if (elementHierarchy.peek().equals(organisatoriskenhet)) {
+                    } else if (elementHierarchy.peek().equalsIgnoreCase(organisatoriskenhet)) {
                         anslutning.setOrganisatoriskenhet(organisatoriskenhetDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
-                    } else if (elementHierarchy.peek().equals(kategori)) {
+                    } else if (elementHierarchy.peek().equalsIgnoreCase(kategori)) {
                         anslutning.setKategori(kategoriDao.getByNameCreateIfNew(event.asCharacters().getData()).getId());
                     }
                 } else if(event.isEndElement()) {
-                    if(huvudelement.equals(event.asEndElement().getName().getLocalPart())) {
+                    if(huvudelement.equalsIgnoreCase(event.asEndElement().getName().getLocalPart())) {
                         if(anslutning.getKategori() == 0) {
                             anslutning.setKategori(kategoriDao.getByNameCreateIfNew("").getId());
                         }
