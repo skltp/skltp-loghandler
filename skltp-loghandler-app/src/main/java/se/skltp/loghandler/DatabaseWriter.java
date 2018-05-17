@@ -52,8 +52,11 @@ public class DatabaseWriter {
                 } else {
                     anslutning.setSenasteAnslutningsDatum(a.getSenasteAnslutningsDatum());
                 }
-
-                anslutningDao.update(anslutning);
+                if(anslutning.isComplete()) {
+                    anslutningDao.update(anslutning);
+                } else {
+                    logger.warn("En icke komplett anslutning hittad, sparas ej till databasen. " + anslutning.toString());
+                }
             } catch (DataIntegrityViolationException e) {
                 logger.error("DatabaseWriter, det gick inte att spara anslutningen till databasen", e);
             }

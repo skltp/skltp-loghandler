@@ -152,4 +152,11 @@ public class Anslutning {
                 ", ursprungligkonsument=" + ursprungligkonsument +
                 '}';
     }
+
+    public boolean isComplete() {
+        if(vardgivare > 0 && vardenhet > 0 && organisatoriskenhet > 0 && tjanstekontrakt > 0 && kategori > 0 && kallsystem > 0 && ursprungligkonsument > 0 && forstaAnslutningsDatum != null && senasteAnslutningsDatum != null) {
+            return true;
+        }
+        return false;
+    }
 }
