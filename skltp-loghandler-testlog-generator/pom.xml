@@ -10,7 +10,7 @@
   <parent>
     <groupId>se.skltp.loghandler</groupId>
     <artifactId>skltp-loghandler</artifactId>
-    <version>1.0.0-RC5</version>
+    <version>1.0.0-RC6-SNAPSHOT</version>
   </parent>
 
   <properties>
